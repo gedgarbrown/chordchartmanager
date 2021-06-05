@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <link rel="stylesheet" href="css/view.css">
+        <title>Chor Chart Manager (edit)</title>
+    </head>
+    <body>
+        <div id="header">
+            <div id="frameKeyChange">
+                <div id=frameKeySelector>
+                    <div>
+                        Key 
+                        <select name="key" id="key">
+                            <option value="0">C</option>
+                            <option value="1">C♯</option>
+                            <option value="101">D♭</option>
+                            <option value="2">D</option>
+                            <option value="3">D♯</option>
+                            <option value="103">E♭</option>
+                            <option value="4">E</option>
+                            <option value="5">F</option>
+                            <option value="6">F♯</option>
+                            <option value="106">G♭</option>
+                            <option value="7">G</option>
+                            <option value="8">G♯</option>
+                            <option value="108">A♭</option>
+                            <option value="9">A</option>
+                            <option value="10">A♯</option>
+                            <option value="110">B♭</option>
+                            <option value="11">B</option>
+                            
+                        </select> 
+                    </div>
+                </div>
+                <div id="frameTranspose">
+                    <input type="checkbox" id="transpose" name="transpose" value="transpose">
+                    <label for="transpose">Transpose</label>
+                </div>
+            </div>
+            <div id="chartTitle">
+                <h1>Chart Title</h1>
+            </div>
+            <div id="frameToEdit">
+                <div> 
+                    &nbsp;
+                </div>
+                <div>
+                    <input id="buttonToEdit" type="button" value="Edit" />
+                </div>
+                <div> 
+                    &nbsp;
+                </div>
+            </div>
+            
+        </div>
+        <div id="content">
+            
+            
+            <div id="chartContent">
+                <div class="row" id="row01">
+                    <div class="rowMeasures" id="rm01"> 
+                        <div class="measure" draggable="true">
+                            <div class="measureChords">
+                                <div class="chord" draggable="true">C</div>
+                                <div class="chord" draggable="true">F</div>
+                                <div class="chord" draggable="true"></div>
+                                <div class="chord" draggable="true">G7</div>
+                            </div>
+                            <div class="measureLyrics">
+                                <div class="lyric" draggable="true">Lor -</div>
+                                <div class="lyric" draggable="true">em</div>
+                                <div class="lyric" draggable="true">ip -</div>
+                                <div class="lyric" draggable="true">sem</div>
+                            </div>
+                            
+                       
+                        </div>
+                        <div class="measure" draggable="true">
+                            <div class="measureChords">
+                                <div class="chord" draggable="true">C</div>
+                                <div class="chord" draggable="true">F</div>
+                                <div class="chord" draggable="true"></div>
+                                <div class="chord" draggable="true">G7</div>
+                            </div>
+                            <div class="measureLyrics">
+                                <div class="lyric" draggable="true">Lor -</div>
+                                <div class="lyric" draggable="true">em</div>
+                                <div class="lyric" draggable="true">ip -</div>
+                                <div class="lyric" draggable="true">sem</div>
+                            </div>
+                            
+                       
+                        </div>
+                        <div class="measure" draggable="true">
+                            <div class="measureChords">
+                                <div class="chord" draggable="true">C</div>
+                                <div class="chord" draggable="true">F</div>
+                                <div class="chord" draggable="true"></div>
+                                <div class="chord" draggable="true">G7</div>
+                            </div>
+                            <div class="measureLyrics">
+                                <div class="lyric" draggable="true">Lor -</div>
+                                <div class="lyric" draggable="true">em</div>
+                                <div class="lyric" draggable="true">ip -</div>
+                                <div class="lyric" draggable="true">sem</div>
+                            </div>
+                            
+                       
+                        </div>
+                        <div class="measure" draggable="true">
+                            <div class="measureChords">
+                                <div class="chord" draggable="true">C</div>
+                                <div class="chord" draggable="true">F</div>
+                                <div class="chord" draggable="true"></div>
+                                <div class="chord" draggable="true">G7</div>
+                            </div>
+                            <div class="measureLyrics">
+                                <div class="lyric" draggable="true">Lor -</div>
+                                <div class="lyric" draggable="true">em</div>
+                                <div class="lyric" draggable="true">ip -</div>
+                                <div class="lyric" draggable="true">sem</div>
+                            </div>
+                            
+                       
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            
+            
+            
+            <div id="framePagePrev">
+                <input id="pageNext" type="button" value="←">
+            </div>
+
+            <div id="framePageNext">
+                <input id="pageNext" type="button" value="→">
+            </div>
+        </div>
+       
+
+        <script src="cordova.js"></script>
+        <script src="js/index.js"></script>
+    </body>
+</html>
