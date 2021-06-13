@@ -28,3 +28,7 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
     window.location = "edit.html";
 }
+
+
+
+

@@ -117,7 +117,7 @@ h1 {
 #tools {
     border: grey 2px;
     display: grid;
-    grid-template-rows: 50% 15% 35%;  
+    grid-template-rows: 45% 15% 40%;  
     padding: 1%;
 }
 
@@ -169,7 +169,7 @@ h1 {
 #frameOtherButtons {
     padding: 2%;
     display: grid;
-    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-template-rows: 17% 17% 17% 17% 11% 11%;
 }
 
 .toolItem {

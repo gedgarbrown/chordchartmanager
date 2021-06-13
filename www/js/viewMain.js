@@ -1,0 +1,1 @@
+document.getElementById("buttonToEdit").addEventListener("click", () => { window.location = "edit.html";})

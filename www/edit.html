@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div id="chartTitle">
-                <h1>Chart Title</h1>
+                <h1 id="title">Chart Title</h1>
             </div>
             <div id="frameToView">
                 <div> 
@@ -156,8 +156,11 @@
                     <div id="frameImportLyrics" class="toolItem">
                         <input id="importLyrics" type="button" value="import lyrics">
                     </div>
-                    <div id="framExport" class="toolItem">
+                    <div id="frameExport" class="toolItem">
                         <input id="export" type="button" value="export">
+                    </div>
+                    <div id="frameNewChart" class="toolItem">
+                        <input id="newChart" type="button" value="+ chart">
                     </div>
                     
                 </div>
@@ -316,6 +319,6 @@
        
 
         <script src="cordova.js"></script>
-        <script src="js/index.js"></script>
+        <script type="module" src="js/editMain.js"></script>
     </body>
 </html>
