@@ -148,7 +148,7 @@ h1 {
 }
 
 #frameCustomChordButton {
-    margin: 1px;
+    margin: 2px;
 
 }
 
@@ -159,8 +159,19 @@ h1 {
     width: 80%; 
 }
 
+#chartDisplay{
+    display: grid;
+    grid-template-rows: 3% 97%;
+    height: 100%;
+}
+
+#frameMpr {
+  max-height: 30px;
+}
+
 #chartContent{
     padding: 1%;
+    
     border: solid grey 2px;
     margin-top: 2px;
     overflow: auto;
@@ -169,7 +180,7 @@ h1 {
 #frameOtherButtons {
     padding: 2%;
     display: grid;
-    grid-template-rows: 17% 17% 17% 17% 11% 11%;
+    grid-template-rows: 17% 34% 17% 11% 11%;
 }
 
 .toolItem {
@@ -183,23 +194,181 @@ h1 {
     grid-template-rows: 50% 50%;
 }
 
-.measureChords, .measureLyrics {
+.pageBreak {
+    border: solid 3px midnightblue;
+    color: midnightblue;
+    width: 100%;
+    text-align: center;
+    background-color: lavender;
+}
+
+
+.measureChords1, .measureLyrics1 {
+    display: grid;
+    grid-template-columns: 100%;
+    font-size: 1em;
+}
+
+.measureChords2, .measureLyrics2 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    font-size: 1em;
+}
+
+.measureChords3, .measureLyrics3 {
+    display: grid;
+    grid-template-columns: 33% 34% 33%;
+    font-size: 1em;
+}
+
+.measureChords4, .measureLyrics4 {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
     font-size: 1em;
 }
 
+.measureChords5, .measureLyrics5 {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    font-size: 1em;
+}
+
+.measureChords6, .measureLyrics6 {
+    display: grid;
+    grid-template-columns: 16.6% 16.6% 16.6% 16.6% 16.6% 16.6%;
+}
+
+.measureChords7, .measureLyrics7 {
+    display: grid;
+    grid-template-columns: 14.2% 14.2% 14.2% 14.2% 14.2% 14.2% 14.2%;
+    font-size: 1em;
+}
+
+.measureChords8, .measureLyrics8 {
+    display: grid;
+    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 
+        12.5% 12.5% 12.5% 12.5%;
+    font-size: 1em;
+}
+
+.measureChords9, .measureLyrics9 {
+    display: grid;
+    grid-template-columns: 11.1% 11.1% 11.1% 11.1%
+        11.1% 11.1% 11.1% 11.1% 11.1%;
+    font-size: 1em;
+}
+
+.measureChords10, .measureLyrics10 {
+    display: grid;
+    grid-template-columns: 10% 10% 10% 10% 10% 
+        10% 10% 10% 10% 10%;
+    font-size: 1em;
+}
+
+.measureChords11, .measureLyrics11 {
+    display: grid;
+    grid-template-columns: 9% 9% 9% 9% 9% 
+        9% 9% 9% 9% 9% 9%;
+    font-size: 1em;
+}
+
+.measureChords12, .measureLyrics12 {
+    display: grid;
+    grid-template-columns: 8.3% 8.3% 8.3% 8.3% 8.3%
+        8.3% 8.3% 8.3% 8.3% 8.3% 8.3% 8.3%;
+    font-size: 1em;
+}
+
+.measureChords13, .measureLyrics13 {
+    display: grid;
+    grid-template-columns: 7.6% 7.6% 7.6% 7.6% 7.6% 
+        7.6% 7.6% 7.6% 7.6% 7.6% 7.6% 7.6% 7.6%;
+    font-size: 1em;
+}
+.measureChords14, .measureLyrics14 {
+    display: grid;
+    grid-template-columns: 7.1% 7.1% 7.1% 7.1% 7.1% 
+    7.1% 7.1% 7.1% 7.1% 7.1% 7.1% 7.1% 7.1%;
+    font-size: 1em;
+}
+
+.measureChords15, .measureLyrics15 {
+    display: grid;
+    grid-template-columns: 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%
+        6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%;
+    font-size: 1em;
+}
+
+.measureChords16, .measureLyrics16 {
+    display: grid;
+    grid-template-columns: 6.2% 6.2% 6.2% 6.2% 6.2% 6.2%
+        6.2% 6.2% 6.2% 6.2% 6.2% 6.2% 6.2% 6.2% 6.2% 6.2%;
+    font-size: 1em;
+}
+
+
+
+
 .chord {
     border: dashed darkgrey 1px;
-    padding: 3px;
+    padding: 1px;
     margin: 2px;
 }
 
-.rowMeasures {
+.lyric {
+    border: dotted darkgrey 1px;
+    padding: 1px;
+    margin: 2px;
+}
+
+
+.rowMeasures1 {
     padding: 1%;
     margin: 2px;
     display: grid;
-    grid-template-columns: 22.5% 22.5% 22.5% 22.5% 10%;
+    grid-template-columns: 100%;
+}
+
+.rowMeasures2 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.rowMeasures3 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 33% 34% 33%;
+}
+
+.rowMeasures4 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+.rowMeasures5 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.rowMeasures6 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 16.5% 16.5% 17% 17% 16.5% 16.5%;
+}
+
+.rowMeasures4 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
 }
 
 .mpr {
@@ -216,6 +385,24 @@ h1 {
     font-size: 1em;
 }
 
+#frameAddMeasureButton {
+    padding: 2px;
+}
+
+#frameAddMeasure {
+    border: solid 1px;
+    display: grid;
+    grid-template-rows: 50% 50%;
+}
+
+#addMeasure {
+    font-size: 0.9em;
+}
+
 #frameBpm {
+    margin-top: 2px;
+}
+
+#frameImportLyrics {
     margin-top: 2px;
 }

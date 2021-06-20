@@ -146,13 +146,17 @@
                     <div id="framePageTurn" class="toolItem">
                         <input id="addPageTurn" type="button" value="+ page turn">
                     </div>
-                    <div id="frameAddMeasure" class="toolItem">
-                        <input id="addMeasure" type="button" value="+ measure">
+                    <div id="frameAddMeasure">
+                        <div id="frameAddMeasureButton" class="toolItem">
+                            <input id="addMeasure" type="button" value="+ measure">
+                        </div>
+                         <div id="frameBpm" class="toolItem">
+                            <label for="bpm">BPM</label>
+                            <input id="bpm" type="number" min="1" max="16" value="4">
+                         </div>
+
                     </div>
-                    <div id="frameBpm" class="toolItem">
-                        <label for="bpm">BPM</label>
-                        <input id="bpm" type="number" min="1" max="16">
-                    </div>
+                    
                     <div id="frameImportLyrics" class="toolItem">
                         <input id="importLyrics" type="button" value="import lyrics">
                     </div>
@@ -166,154 +170,157 @@
                 </div>
                     
             </div>
-            <div id="chartContent">
-                <div class="row" id="row01">
-                    <div class="rowMeasures" id="rm01"> 
-                        <div class="measure" draggable="true">
-                            <div class="measureChords">
-                                <div class="chord" draggable="true">C</div>
-                                <div class="chord" draggable="true">F</div>
-                                <div class="chord" draggable="true"></div>
-                                <div class="chord" draggable="true">G7</div>
-                            </div>
-                            <div class="measureLyrics">
-                                <div class="lyric" draggable="true">Lor -</div>
-                                <div class="lyric" draggable="true">em</div>
-                                <div class="lyric" draggable="true">ip -</div>
-                                <div class="lyric" draggable="true">sem</div>
-                            </div>
-                            
-                       
-                        </div>
-                        <div class="measure" draggable="true">
-                            
-                            <div class="measureChords">
-                                <div class="chord" draggable="true">C</div>
-                                <div class="chord" draggable="true">F</div>
-                                <div class="chord" draggable="true"></div>
-                                <div class="chord" draggable="true">G7</div>
-                            </div>
-                            <div class="measureLyrics">
-                                <div class="lyric" draggable="true">Lor -</div>
-                                <div class="lyric" draggable="true">em</div>
-                                <div class="lyric" draggable="true">ip -</div>
-                                <div class="lyric" draggable="true">sem</div>
-                            </div>
-                            
-    
-                        </div>
-                        <div class="measure" draggable="true">
-                            
-                            <div class="measureChords">
-                                <div class="chord" draggable="true">C</div>
-                                <div class="chord" draggable="true">F</div>
-                                <div class="chord" draggable="true"></div>
-                                <div class="chord" draggable="true">G7</div>
-                            </div>
-                            <div class="measureLyrics">
-                                <div class="lyric" draggable="true">Lor -</div>
-                                <div class="lyric" draggable="true">em</div>
-                                <div class="lyric" draggable="true">ip -</div>
-                                <div class="lyric" draggable="true">sem</div>
-                            </div>
-                            
-    
-                        </div>
-                        <div class="measure" draggable="true">
-                            
-                            <div class="measureChords">
-                                <div class="chord" draggable="true">C</div>
-                                <div class="chord" draggable="true">F</div>
-                                <div class="chord" draggable="true"></div>
-                                <div class="chord" draggable="true">G7</div>
-                            </div>
-                            <div class="measureLyrics">
-                                <div class="lyric" draggable="true">Lor -</div>
-                                <div class="lyric" draggable="true">em</div>
-                                <div class="lyric" draggable="true">ip -</div>
-                                <div class="lyric" draggable="true">sem</div>
-                            </div>
-                            
-    
-                        </div>
-                        <div class="rowMpr">
-                            <input class="mpr" id="mpr01" type="number" min="1" max="8">
-                        </div>
-                    </div>
+
+            <div id="chartDisplay">
+                <div id="frameMpr">
+                    <label for="mpr">Measures Per Row</label>
+                     <input id="mpr" type="number" value="3" min="1" max="6">
                 </div>
-                <div class="row" id="row02">
-                    <div class="rowMeasures" id="rm02"> 
-                        <div class="measure" draggable="true">
-                            <div class="measureChords">
-                                <div class="chord" draggable="true">C</div>
-                                <div class="chord" draggable="true">F</div>
-                                <div class="chord" draggable="true"></div>
-                                <div class="chord" draggable="true">G7</div>
+            
+                <div id="chartContent">
+                    <div class="row" id="row01">
+                        <div class="rowMeasures" id="rm01"> 
+                            <div class="measure" draggable="true">
+                                <div class="measureChords">
+                                    <div class="chord" draggable="true">C</div>
+                                    <div class="chord" draggable="true">F</div>
+                                    <div class="chord" draggable="true"></div>
+                                    <div class="chord" draggable="true">G7</div>
+                                </div>
+                                <div class="measureLyrics">
+                                    <div class="lyric" draggable="true">Lor -</div>
+                                    <div class="lyric" draggable="true">em</div>
+                                    <div class="lyric" draggable="true">ip -</div>
+                                    <div class="lyric" draggable="true">sem</div>
+                                </div>
+                                
+                        
                             </div>
-                            <div class="measureLyrics">
-                                <div class="lyric" draggable="true">Lor -</div>
-                                <div class="lyric" draggable="true">em</div>
-                                <div class="lyric" draggable="true">ip -</div>
-                                <div class="lyric" draggable="true">sem</div>
+                            <div class="measure" draggable="true">
+                                
+                                <div class="measureChords">
+                                    <div class="chord" draggable="true">C</div>
+                                    <div class="chord" draggable="true">F</div>
+                                    <div class="chord" draggable="true"></div>
+                                    <div class="chord" draggable="true">G7</div>
+                                </div>
+                                <div class="measureLyrics">
+                                    <div class="lyric" draggable="true">Lor -</div>
+                                    <div class="lyric" draggable="true">em</div>
+                                    <div class="lyric" draggable="true">ip -</div>
+                                    <div class="lyric" draggable="true">sem</div>
+                                </div>
+                                
+        
                             </div>
-                            
-                       
-                        </div>
-                        <div class="measure" draggable="true">
-                            
-                            <div class="measureChords">
-                                <div class="chord" draggable="true">C</div>
-                                <div class="chord" draggable="true">F</div>
-                                <div class="chord" draggable="true"></div>
-                                <div class="chord" draggable="true">G7</div>
+                            <div class="measure" draggable="true">
+                                
+                                <div class="measureChords">
+                                    <div class="chord" draggable="true">C</div>
+                                    <div class="chord" draggable="true">F</div>
+                                    <div class="chord" draggable="true"></div>
+                                    <div class="chord" draggable="true">G7</div>
+                                </div>
+                                <div class="measureLyrics">
+                                    <div class="lyric" draggable="true">Lor -</div>
+                                    <div class="lyric" draggable="true">em</div>
+                                    <div class="lyric" draggable="true">ip -</div>
+                                    <div class="lyric" draggable="true">sem</div>
+                                </div>
+                                
+        
                             </div>
-                            <div class="measureLyrics">
-                                <div class="lyric" draggable="true">Lor -</div>
-                                <div class="lyric" draggable="true">em</div>
-                                <div class="lyric" draggable="true">ip -</div>
-                                <div class="lyric" draggable="true">sem</div>
+                            <div class="measure" draggable="true">
+                                
+                                <div class="measureChords">
+                                    <div class="chord" draggable="true">C</div>
+                                    <div class="chord" draggable="true">F</div>
+                                    <div class="chord" draggable="true"></div>
+                                    <div class="chord" draggable="true">G7</div>
+                                </div>
+                                <div class="measureLyrics">
+                                    <div class="lyric" draggable="true">Lor -</div>
+                                    <div class="lyric" draggable="true">em</div>
+                                    <div class="lyric" draggable="true">ip -</div>
+                                    <div class="lyric" draggable="true">sem</div>
+                                </div>
+                                
+        
                             </div>
-                            
-    
-                        </div>
-                        <div class="measure" draggable="true">
-                            
-                            <div class="measureChords">
-                                <div class="chord" draggable="true">C</div>
-                                <div class="chord" draggable="true">F</div>
-                                <div class="chord" draggable="true"></div>
-                                <div class="chord" draggable="true">G7</div>
-                            </div>
-                            <div class="measureLyrics">
-                                <div class="lyric" draggable="true">Lor -</div>
-                                <div class="lyric" draggable="true">em</div>
-                                <div class="lyric" draggable="true">ip -</div>
-                                <div class="lyric" draggable="true">sem</div>
-                            </div>
-                            
-    
-                        </div>
-                        <div class="measure" draggable="true">
-                            
-                            <div class="measureChords">
-                                <div class="chord" draggable="true">C</div>
-                                <div class="chord" draggable="true">F</div>
-                                <div class="chord" draggable="true"></div>
-                                <div class="chord" draggable="true">G7</div>
-                            </div>
-                            <div class="measureLyrics">
-                                <div class="lyric" draggable="true">Lor -</div>
-                                <div class="lyric" draggable="true">em</div>
-                                <div class="lyric" draggable="true">ip -</div>
-                                <div class="lyric" draggable="true">sem</div>
-                            </div>
-                            
-    
-                        </div>
-                        <div class="rowMpr">
-                            <input class="mpr" id="mpr01" type="number" min="1" max="8">
                         </div>
                     </div>
+                    <div class="row" id="row02">
+                        <div class="rowMeasures" id="rm02"> 
+                            <div class="measure" draggable="true">
+                                <div class="measureChords">
+                                    <div class="chord" draggable="true">C</div>
+                                    <div class="chord" draggable="true">F</div>
+                                    <div class="chord" draggable="true"></div>
+                                    <div class="chord" draggable="true">G7</div>
+                                </div>
+                                <div class="measureLyrics">
+                                    <div class="lyric" draggable="true">Lor -</div>
+                                    <div class="lyric" draggable="true">em</div>
+                                    <div class="lyric" draggable="true">ip -</div>
+                                    <div class="lyric" draggable="true">sem</div>
+                                </div>
+                                
+                        
+                            </div>
+                            <div class="measure" draggable="true">
+                                
+                                <div class="measureChords">
+                                    <div class="chord" draggable="true">C</div>
+                                    <div class="chord" draggable="true">F</div>
+                                    <div class="chord" draggable="true"></div>
+                                    <div class="chord" draggable="true">G7</div>
+                                </div>
+                                <div class="measureLyrics">
+                                    <div class="lyric" draggable="true">Lor -</div>
+                                    <div class="lyric" draggable="true">em</div>
+                                    <div class="lyric" draggable="true">ip -</div>
+                                    <div class="lyric" draggable="true">sem</div>
+                                </div>
+                                
+        
+                            </div>
+                            <div class="measure" draggable="true">
+                                
+                                <div class="measureChords">
+                                    <div class="chord" draggable="true">C</div>
+                                    <div class="chord" draggable="true">F</div>
+                                    <div class="chord" draggable="true"></div>
+                                    <div class="chord" draggable="true">G7</div>
+                                </div>
+                                <div class="measureLyrics">
+                                    <div class="lyric" draggable="true">Lor -</div>
+                                    <div class="lyric" draggable="true">em</div>
+                                    <div class="lyric" draggable="true">ip -</div>
+                                    <div class="lyric" draggable="true">sem</div>
+                                </div>
+                                
+        
+                            </div>
+                            <div class="measure" draggable="true">
+                                
+                                <div class="measureChords">
+                                    <div class="chord" draggable="true">C</div>
+                                    <div class="chord" draggable="true">F</div>
+                                    <div class="chord" draggable="true"></div>
+                                    <div class="chord" draggable="true">G7</div>
+                                </div>
+                                <div class="measureLyrics">
+                                    <div class="lyric" draggable="true">Lor -</div>
+                                    <div class="lyric" draggable="true">em</div>
+                                    <div class="lyric" draggable="true">ip -</div>
+                                    <div class="lyric" draggable="true">sem</div>
+                                </div>
+                                
+        
+                            </div>
+                            
+                        </div>
+                </div>
             </div>
         </div>
        

@@ -13,19 +13,23 @@ export class Chart {
     }
     
     deleteMeasure(measureId) {
-
+        
     }
 
-    addMeasure() {
+    addMeasure(id, bpm, pageBreak = false) {
+        let newMeasure = new Measure(id, bpm, pageBreak);
+        this.measures.push(newMeasure);
+        //console.log(this.measures);
+
 
     }
 
     moveMeasure() {
-
+        
     }
 
     changeKey(newKey) {
-
+        
     }
 
     saveChart() {
@@ -59,12 +63,17 @@ export class Chart {
         return this.key;
     }
 
+    setName(newName){
+        this.name = newName;
+    }
+
 }
 
 export class Measure {
-    constructor (id, beats, isPageBreak) {
+    constructor (id, beats, isPageBreak = false) {
         this.id = id;
-        this. chords = [];
+        this.chords = [];
+        this.lyrics = [];
         this.beats = beats;
         this.isPageBreak = isPageBreak;
     }
@@ -125,8 +134,8 @@ export class Chord {
 
     getToneName () {
         
-        console.log("getting tone name for: ", this.tone);
-        switch (this.tone) {
+       // console.log("getting tone name for: ", this.tone);
+        switch (+this.tone) {
             case 11:
                 return "B";
             case 110:
@@ -195,7 +204,7 @@ export class Chord {
             isFlat = true;
         }
 
-        switch(tonic) {
+        switch(+tonic) {
             case 1:
             case 3:
             case 6:
@@ -211,7 +220,7 @@ export class Chord {
 
         if (isFlat) {
             
-            switch(subdominant) {
+            switch(+subdominant) {
                 case 1:
                 case 3:
                 case 6:
@@ -238,7 +247,7 @@ export class Chord {
             isFlat = true;
         }
 
-        switch(tonic) {
+        switch(+tonic) {
             case 1:
             case 3:
             case 6:
@@ -253,7 +262,7 @@ export class Chord {
         let dominant = (key + 7) % 12;
         if (isFlat) {
             
-            switch(dominant) {
+            switch(+dominant) {
                 case 1:
                 case 3:
                 case 6:
@@ -273,35 +282,9 @@ export class Chord {
 
     transposeKey(oldKey, newKey) {
         let isFlat = false;
-        let shift = 0;
-        console.log("variables for TransposeKey:");
-       
-        console.log("oldKey: ", oldKey);
-        console.log("newKey: ", newKey);
-
-        if (oldKey > 100){
-            oldKey =- 100;
-        }
-
-        if (newKey > 100){
-            isFlat = true;
-            newKey -= 100;
-        }
-        console.log("newKey", newKey);
-
-        if (oldKey > newKey) {
-            shift = 12 - (oldKey - newKey);
-        }
-        else {
-            shift = newKey - oldKey;
-        }
-
-        console.log("shift: ", shift);
-
-        let newTone = (this.tone + shift) % 12;
-
-
-        switch(newKey) {
+        
+        
+        switch(+newKey) {
             case 1:
             case 3:
             case 5:
@@ -311,18 +294,55 @@ export class Chord {
                 isFlat = true;
             break;
             default:
-
+                isFlat = false;
             break;
         }
+        
+        console.log("variables for TransposeKey:");
+       
+        console.log("oldKey: ", oldKey);
+        console.log("newKey: ", newKey);
+
+        if (oldKey > 100){
+            oldKey -= 100;
+        }
+
+        console.log("oldKey after 100: ", oldKey)
+
+        if (newKey > 100){
+            isFlat = true;
+            newKey -= 100;
+        }
+
+        console.log("newKey after 100", newKey);
+       
+        let shift = (12 + newKey - oldKey) % 12;
+
+        console.log("shift: ", shift);
+        let newTone = 0;
+
+        if(this.tone > 100) {
+            newTone = (this.tone + shift - 100) % 12;
+        } 
+        else {
+            newTone = (this.tone + shift) % 12;
+        }     
+
+       
+
+        console.log("New Tone: ", newTone); 
+        
 
         console.log("isFlat: ", isFlat);
 
-        if (isFlat) {
+        if (isFlat == true) {
             newTone += 100;
         }
 
-        this.tone = newTone;
+        console.log("Transposing from: ", this.tone);
         
+        this.tone = newTone;
+        console.log("Transposing to: ", this.tone)
     }
 }
 

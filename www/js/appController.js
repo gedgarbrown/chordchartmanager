@@ -5,18 +5,29 @@ import {EditDisplay} from "./appView.js";
 
 export class EditController {
     constructor() {
+
+        this.idGenerator = 1;
         this.chart = new Chart(Date.now(), "New Chart");
+       
+
+        console.log("Measures created:", this.chart.measures);
+
         this.editDisplay = new EditDisplay();
         this.updateKey();
         this.createToolBarChords(0);
+        //adding default measures
+        for (let i = 0; i < 6; i++){
+            this.addMeasure();
+        }
+
         this.updateDisplay();
-       
+        
     }
 
     updateDisplay() {
 
       this.editDisplay.renderEdit(this.chart);
-
+      
         
     }
 
@@ -24,7 +35,7 @@ export class EditController {
         
         let newKey = document.getElementById('key').value;
         let willTranspose = document.getElementById('transpose').checked;
-        console.log(newKey);
+        //console.log(newKey);
         
         let oldKey = this.chart.getKey();
         this.chart.setKey(newKey);
@@ -75,5 +86,113 @@ export class EditController {
             this.chart.toolChords[i].transposeKey(oldKey, newKey);        }
 
     }
+
+    addCustomChord() {
+        let tone = document.getElementById("chordKey").value;
+        let type = document.getElementById("chordType").value;
+
+        let newChord = new Chord(Date.now(), tone, type);
+        this.chart.toolChords.push(newChord);
+        this.editDisplay.displayChordsForToolBar(this.chart.toolChords);
+
+    }
+
+    addMeasure() {
+        let bpm = document.getElementById("bpm").value;
+        if(isNaN(bpm) || bpm < 1){
+            bpm = 4;
+        }
+
+        this.chart.addMeasure(this.idGenerator,bpm, false);
+        this.idGenerator++;
+        this.updateDisplay();
+
+    }
+
+    addPageTurn() {
+        
+        this.chart.addMeasure(this.idGenerator, 1, true);
+        this.idGenerator++;
+        this.updateDisplay();
+    }
+
+    loadChart() {
+        alert("ToDo: loadChart");
+    }
+
+    saveChart() {
+        alert("ToDo: saveChart");
+    }
+
+    importLyrics() {
+
+    }
+
+    exportChart() {
+
+    }
+
+    newChart() {
+
+        let confirmation = confirm("Are you sure you want to create a new chart?"
+            + "Any unsaved data on the current chart will be lost.");
+
+        if (!confirmation) {
+            return;
+        }
+        
+        this.idGenerator = 1;
+        this.chart = new Chart(Date.now(), "New Chart");
+       
+
+        console.log("New chart Measures created:", this.chart.measures);
+
+        this.editDisplay = new EditDisplay();
+        
+        this.updateKey();
+        this.createToolBarChords(0);
+        //adding default measures
+        for (let i = 0; i < 6; i++){
+            this.addMeasure();
+        }
+
+        this.updateDisplay();
+
+    }
+
+    changeChartName(){
+        let newName = prompt("Please enter the new chart name: ", )
+        this.chart.setName(newName);
+        this.updateDisplay();
+    }
+
+    
+
+}
+
+export class ViewController{
+    constructor() {
+
+    }
+
+    prevPage() {
+        alert("TODO: previous page turn.");
+    }
+
+    nextPage() {
+        alert("TODO: next page turn.");
+    }
+
+    transposeKey() {
+        alert("TODO: change key");
+    }
+
+
+
+
+
+
+
+
 
 }
