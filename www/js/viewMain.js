@@ -1,7 +1,7 @@
 import { ViewController } from "./appController.js";
 
 
-let viewController = new EditController();
+let viewController = new ViewController();
 
 
 

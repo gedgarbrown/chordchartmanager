@@ -406,3 +406,67 @@ h1 {
 #frameImportLyrics {
     margin-top: 2px;
 }
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(70, 68, 80, 0.5);
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s, transform 0.25s;
+    z-index: 0;
+}
+
+.loadModal {
+
+    position: absolute;
+    top: 15%;
+    left: 30%;
+    transform: translate (-15%, -50%);
+    background-color: slategrey;
+    border: solid darkslategray;
+    color: darkslategray;
+    padding: 1rem 1.5rem;
+    width: 24rem;
+    visibility: hidden;
+    z-index: -1;
+        
+}
+
+.closeButton {
+    float: right;
+    width: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    background-color: lightgray;
+    visibility: hidden;
+
+}
+
+.showModal {
+    opacity: 1;
+    display: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0.25s, opacity 0.25s, transform 0.25s;
+ 
+}
+
+.alertModal {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translate (-30%, -50%);
+    background-color: white;
+    border: solid green;
+    color: grey;
+    padding: 1rem 1.5rem;
+    width: 24rem;
+    border-radius: 2rem;
+    visibility: hidden;
+    
+}

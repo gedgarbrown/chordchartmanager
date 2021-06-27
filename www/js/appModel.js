@@ -63,6 +63,67 @@ export class Chart {
         return this.key;
     }
 
+    getKeyName() {
+           
+       // console.log("getting tone name for: ", this.tone);
+       switch (+this.tone) {
+        case 11:
+            return "B";
+        case 110:
+            return "B♭";  
+                
+       case 10:
+          return "A♯";
+
+        case 9:
+            return "A";
+
+        case 108:
+            return "A♭";
+
+        case 8:
+            return "G♯";
+
+        case 7:
+            return "G";
+
+        case 106:
+            return "G♭";
+
+        case 6:
+            return "F♯";
+
+        case 5:
+            return "F";
+          
+        case 4:
+            return "E";
+
+        case 103:
+            return "E♭";
+
+        case 3:
+            return "D♯";
+          
+        case 2:
+            return "D";
+
+        case 101:
+            return "D♭";
+        
+        case 1:
+            return "C♯";
+    
+        case 0:
+            return "C";
+
+        default:
+          return 'C';
+      }
+      
+      return 'C';
+    }
+
     setName(newName){
         this.name = newName;
     }
@@ -110,10 +171,11 @@ export class Measure {
 }
 
 export class Chord {
-    constructor (id, tone, type){
+    constructor (id, tone, type, isToolBarChord = false){
         this.id = id;
         this.tone = tone * 1;
         this.type = type;
+        this.isToolBarChord = isToolBarChord;
     }
 
     setTone(newTone) {
@@ -130,6 +192,12 @@ export class Chord {
 
     getType() {
         return this.type;
+    }
+
+    getChordName() {
+        let chordName = this.getToneName() + this.type;
+
+        return chordName;
     }
 
     getToneName () {

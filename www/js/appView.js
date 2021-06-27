@@ -3,8 +3,15 @@ export class EditDisplay {
         this.idGenerator = 0;
     }
 
-    displayMeasures(measures, bpm) {
+    displayMeasures(newContent) {
 
+        let content = document.getElementById("chartContent");
+        content.innerHTML = "";
+        let contentParent = content.parentNode;
+
+        content.remove();
+
+        contentParent.appendChild(newContent);
 
     }
 
@@ -20,36 +27,17 @@ export class EditDisplay {
 
     }
 
-    displayChordsForToolBar(chords) {
+    clearChordsForToolBar() {
         let toolBarChords = document.getElementById("frameChords");
         toolBarChords.innerHTML = "";
+    }
 
-        for (let i = 0; i < chords.length; i++){
-
+    displayChordInToolBar(chord) {
+       
+        let toolBarChords = document.getElementById("frameChords");
         
-            let newChord = document.createElement("div");
-
-            newChord.classList.add("chordOption");
-            newChord.draggable = true;
-            newChord.ondragstart = (ev) => {
-                ev.dataTransfer.setData("id", ev.target.id)
-            };
-            newChord.ondrop = (ev) => {
-                alert("dropping");
-                ev.preventDefault();
-                let data = ev.dataTransfer.getData("id");
-                //ev.target.innerText = document.getElementById(data).innerText;
-                ev.target.innerText = "C";
-            };
+        toolBarChords.appendChild(chord);
         
-            let toneName =  chords[i].getToneName();
-            //console.log("adding Tone Name:", toneName);
-            newChord.innerText = toneName + chords[i].type;
-
-            toolBarChords.appendChild(newChord);
-            console.log(i, chords[i].id);//debug 
-
-       }
         
 
         
@@ -58,8 +46,8 @@ export class EditDisplay {
     renderEdit(chart) {
         
         this.displayKeyChange(chart.getKey());
-        this.displayChordsForToolBar(chart.toolChords);
-        this.displayMeasures(chart.measures);
+        //this.displayChordsForToolBar(chart.toolChords);
+        //this.displayMeasures(chart.measures);
         this.displayTitle(chart.name);
 
         document.getElementById("title").innerText = chart.name;
@@ -72,115 +60,68 @@ export class EditDisplay {
         title.innerText = chartName;
 
     }
-    displayMeasures(measures) {
-        //alert("displaying measures");
-        console.log("Running DisplayMeasures: measures:", measures);
 
+    displayChartSaved(){
 
-        let content = document.getElementById("chartContent");
-        content.innerHTML = "";
-        let measuresCurrentRow = 0;
-        let rowNumbers = 0;
-        let mpr = parseInt(document.getElementById("mpr").value);
-        if (isNaN(mpr)) {
-            mpr = 3;
-        }
-           
         
-        //let measureElements = [];
-        let row = null;
+        let newModal = document.createElement("div");
+        document.body.appendChild(newModal);
+        newModal.innerText = "Chart Saved";
+        newModal.classList.add("alertModal");
+        newModal.style.visibility = "visible";
         
-        
-        for(let i = 0; i < measures.length; i++){
-            //console.log("currentmeasures in row and mpr: ", measuresCurrentRow, mpr);
-            //console.log(measuresCurrentRow < mpr)
+        setTimeout(() => {newModal.remove();}, 3000);
 
-            console.log("is pb: ", measures[i].isPageBreak);
-
-            if (!(measuresCurrentRow%mpr) || measures[i].isPageBreak) {
-
-                //row = this.createNewRow();
-
-               
-                row = document.createElement("div");
-                
-                content.appendChild(row);
-
-                let rowClass = "rowMeasures" + (measures[i].isPageBreak ? 1 : mpr);
-
-                //console.log("New Row ", rowClass);
-                row.classList.add(rowClass);
-                                
-                rowNumbers++;
-                row.id = rowNumbers;
-
-            }    
-
-            if (measures[i].isPageBreak) {
-                measuresCurrentRow = 0;
-
-                let newPageBreak = document.createElement("div");
-
-                newPageBreak.classList.add("pageBreak");
-                row.appendChild(newPageBreak);
-                newPageBreak.innerText = "---PAGE BREAK---";
-                continue;
-
-            }  
-
-            //measureElements[i] = document.createElement("div");
-            let newMeasure = document.createElement("div");
-            console.log("current row", row);
-            console.log(newMeasure);
-
-            row.appendChild(newMeasure);
-            measuresCurrentRow++;
-            
-            
-            newMeasure.id = measures[i].id;
-            newMeasure.draggable = true;
-            newMeasure.classList.add("measure");
-
-            let measureChords = document.createElement("div");
-            let measureLyrics = document.createElement("div");
-
-            let beatsClassAdjust = measures[i].beats;
-
-            measureChords.classList.add("measureChords" + beatsClassAdjust);
-            measureLyrics.classList.add("measureLyrics" + beatsClassAdjust);
-
-            newMeasure.appendChild(measureChords);
-            newMeasure.appendChild(measureLyrics);
-            
-            for (let x = 0; x < measures[i].beats; x++) {
-                let beatChord = document.createElement("div");
-                let beatLyric = document.createElement("div");
-                
-                beatChord.classList.add("chord");
-                beatLyric.classList.add("lyric");
-                
-                beatChord.draggable = true;
-                beatChord.ondragstart = () => 
-                    {ev.dataTransfer.setData("text", ev.target.id)};
-                beatChord.ondragover = (ev) => 
-                    {ev.preventDefault();}
-                beatChord.ondrop = (ev) => 
-                        {//ondrop event
-                        };
-                beatLyric.draggable = true;
-
-                
-                measureChords.appendChild(beatChord);
-                measureLyrics.appendChild(beatLyric);
-
-            }
-
-                     
-
-        }
     }
 
-   
+    displayChartsToLoad(loadList) {
+        /*
+         <div id="modal" class="modal">
+            <div id="loadModal" class="loadModal">
+                <span id="closeButton" class="closeButton"></span>
+                
+            </div>
+        </div>
+        */
+       
+        let loadModal = document.createElement("div");
+        loadModal.classList.add("loadModal");
+
+        let modal = document.createElement("div");
+        modal.classList.add("modal");
+        modal.id = "modal";
+
+        let closeButton = document.createElement("span");
+        closeButton.classList.add("closeButton");
+        closeButton.innerText = "X";
+        closeButton.style.visibility = "visible";
+
+
+        loadModal.appendChild(closeButton);
+        loadModal.appendChild(loadList);
+        
+        document.body.appendChild(modal);
+        modal.appendChild(loadModal);
+
+       modal.focus();
+
+
+        loadModal.style.visibility = "visible";
+        modal.style.visibility = "visible";
+        modal.classList.add("showModal");
+        closeButton.addEventListener("click", () => {
+            this.closeLoadModal();
+        });
+
+
+    }
+
+    closeLoadModal() {
+        
+        let modal = document.getElementById("modal");
+        modal.remove();
+    }
+
 
 
 }

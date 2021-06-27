@@ -32,7 +32,7 @@ document.getElementById("newChart").addEventListener("click",
     () => {editController.newChart();});
 
 
-
++
 //content controls
 document.getElementById("mpr").addEventListener("change", 
     () => {editController.updateDisplay();});
