@@ -1,8 +1,7 @@
-import { EditController } from "./appController.js";
+import { EditController, ViewController } from "./appController.js";
 
 
 let editController = new EditController();
-
 
 
 
@@ -10,7 +9,9 @@ let editController = new EditController();
 document.getElementById("key").addEventListener("change", 
     () => { editController.updateKey(); } );
 document.getElementById("buttonToView").addEventListener("click", 
-    () => { window.location = "view.html";});
+    () => { window.location = "view.html";
+          localStorage.setItem("currentChart", JSON.stringify(editController.chart));
+    });
 document.getElementById("buttonSave").addEventListener("click", 
     () => {editController.saveChart();});
 document.getElementById("buttonLoad").addEventListener("click", 

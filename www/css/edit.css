@@ -426,8 +426,8 @@ h1 {
     top: 15%;
     left: 30%;
     transform: translate (-15%, -50%);
-    background-color: slategrey;
-    border: solid darkslategray;
+    background-color: lightgray;
+    border: solid  darkslategray;
     color: darkslategray;
     padding: 1rem 1.5rem;
     width: 24rem;

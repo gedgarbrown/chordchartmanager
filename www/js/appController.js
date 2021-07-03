@@ -1,5 +1,5 @@
-import {Chart, Chord} from "./appModel.js";
-import {EditDisplay} from "./appView.js";
+import {Chart, Chord, Measure} from "./appModel.js";
+import {EditDisplay, ViewDisplay} from "./appView.js";
 //import {getKeyFromCode} from "./utilities.js";
 
 
@@ -26,10 +26,11 @@ export class EditController {
 
     updateDisplay() {
     
-      this.updateChordToolBar();   
-      this.updateKey();         
-      this.editDisplay.renderEdit(this.chart);
-      this.updateChartContent();
+        
+        this.updateChordToolBar();   
+             
+        this.editDisplay.renderEdit(this.chart);
+        this.updateChartContent();
         
     }
 
@@ -170,7 +171,7 @@ export class EditController {
         //let measureElements = [];
         let row = null;
                 
-        for(let i = 0; i < measures.length; i++){
+        for(let i = 0; i < measures.length; i++) {
             //console.log("currentmeasures in row and mpr: ", measuresCurrentRow, mpr);
             //console.log(measuresCurrentRow < mpr)
 
@@ -376,45 +377,83 @@ export class EditController {
             return;
         }
 
+        
         for (let i = 0; i < ocObject.length; i++){
             let newSavedChart = document.createElement("div");
            
             console.log("objects ", ocObject[i]);
             
-            let newChart = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key);
-            
-            for (let x = 0; x < ocObject[i].measures.length; x++){
-                console.log("measure ", ocObject[i].measures[x]);
-                newChart.measures.push(ocObject[i].measures[x]);
+            let newObject = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key, ocObject[i].isToolBarChord);
 
-            }
-
-            let chartName = newChart.name + "(" + newChart.getKeyName() + ")";
+            let chartName = newObject.name + "(" + newObject.getKeyName() + ")";
 
             newSavedChart.innerText = chartName;
             newSavedChart.addEventListener("click", () => {
                
                 let confirmed = confirm(
                     "Load " + ocObject[i].name + 
-                    "over current chart?\n Current Chart will not be saved."
+                    " over current chart?\n Current Chart will not be saved."
                 );
                 console.log(confirmed);
 
                 if(confirmed){
+                    console.log("Loading: ", ocObject[i].name);
                     console.log("this.chart before: ", this.chart);
-                    console.log("newChart", newChart);
+                    console.log("loading Chart", ocObject[i]);
 
-                    this.chart = newChart;
+                    this.chart = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key);
 
+                    console.log("TC length: ", ocObject[i].toolChords.length);
+                    
+
+                    for (let tci = 0; tci < ocObject[i].toolChords.length; tci++){
+                        let otc = ocObject[i].toolChords[tci];
+                        let newChord = new Chord(otc.id, otc.tone, otc.type, otc.isToolBarChord);
+                        
+                        console.log("TC length: ", ocObject[i].toolChords.length);
+                        console.log("tci: ", tci);
+                        console.log("tci < TC.lenght", tci < ocObject[i].toolChords.length)
+                        this.chart.toolChords.push(newChord);
+                    }
+
+                    for (let mi = 0; mi < ocObject[i].measures.length; mi++){
+
+                        let om = ocObject[i].measures[mi];
+                        console.log("Is Page Break: ", om.isPageBreak);
+
+                        let newMeasure = new Measure(om.id, om.beats, om.isPageBreak);
+                        
+                        for (let ci = 0; ci < om.chords.length; ci++){
+                            let oc = om.chords[ci];
+                            let newChord = new Chord(oc.id, oc.tone, oc.type, oc.isToolBarChord);
+
+                            newMeasure.chords.push(newChord);
+                        }
+
+                        
+                        
+
+                        for (let li = 0; li < om.chords.length; li++){
+                            let ol = om.lyrics[li];
+                            newMeasure.lyrics.push(ol);
+                        }
+
+                        this.chart.measures.push(newMeasure);
+
+                    }
+                                        
                     console.log("this.chart after: ", this.chart);
 
-                    this.updateDisplay;
+                    this.updateDisplay();
                     this.editDisplay.closeLoadModal();
+
                 } else {
                     return;
                 }
                 
             }); 
+
+            newSavedChart.style.cursor = "pointer";
 
             loadList.appendChild(newSavedChart);
         }
@@ -527,27 +566,354 @@ export class EditController {
 
 export class ViewController{
     constructor() {
+       
+        this.loadChart(this.getCurrentChart());
+        this.page = 0;
+        this.viewDisplay = new ViewDisplay();
+        this.key = 0;
+        this.maxPages = this.getMaxPages();
+        
+        console.log("MaxPages", this.maxPages);
+
+        this.disablePageNextButton();
+        this.disablePagePrevButton();
+
+        if (this.maxPages > 1) {
+           this.enablePageNextButton();
+        }
+
+
+        this.updateDisplay();
 
     }
 
     prevPage() {
-        alert("TODO: previous page turn.");
+        this.page--;
+        if (this.page <= 0) {
+            this.page = 0;
+            this.disablePagePrevButton();
+        } else {
+            this.enablePagePrevButton();
+        }
+
+        if (this.page >= this.maxPages) {
+            this.page = this.MaxPages - 1;
+            this.disablePageNextButton();
+        } else {
+            this.enablePageNextButton();
+        }
+
+        this.updateDisplay();
     }
 
     nextPage() {
-        alert("TODO: next page turn.");
+       this.page ++;
+        
+       if (this.page >= this.maxPages) {
+           this.page = this.MaxPages - 1;
+           this.disablePageNextButton();
+       } else {
+           this.enablePageNextButton();
+       }
+
+       if (this.page <= 0) {
+           this.page = 0;
+           this.disablePagePrevButton();
+       } else {
+           this.enablePagePrevButton();
+       }
+       
+       this.updateDisplay();
+
     }
+
+    disablePageNextButton() {
+        let button = document.getElementById("pageNext");
+        button.addEventListener("click", () =>{ });
+       
+        this.viewDisplay.disablePageNavigationButton(button);
+    }
+
+    enablePageNextButton() {
+        let button = document.getElementById("pageNext");
+        button.addEventListener("click", () =>{
+            
+            this.nextPage();
+        });
+
+       
+        this.viewDisplay.enablePageNavigationButton(button);
+
+
+    }
+
+    disablePagePrevButton() {
+        let button = document.getElementById("pagePrev");
+        button.addEventListener("click", () =>{});
+        
+        this.viewDisplay.disablePageNavigationButton(button);
+
+    }
+
+    enablePagePrevButton() {
+        let button = document.getElementById("pagePrev");
+        button.addEventListener("click", () =>{
+            this.prevPage();
+        });
+
+        this.viewDisplay.enablePageNavigationButton(button);
+    }
+
 
     transposeKey() {
         alert("TODO: change key");
     }
 
+    getMaxPages() {
+
+        let maxPages = 1;
+
+        for (let i = 0; i < this.chart.measures.length; i++) {
+            if (this.chart.measures[i].isPageBreak) {
+                maxPages ++;
+            }
+
+        }
+
+        return maxPages;
+
+    }
+    updateDisplay() {
+        this.viewDisplay.renderView(this.chart, this.page);
+    }
+
+    getCurrentChart() {
+
+        let currentChart = localStorage.getItem("currentChart");
+        let ccObject = JSON.parse(currentChart);
+
+        if (ccObject == null){
+
+             return new Chart(Date.now(), "New Chart", 0);
+        } 
+
+        return ccObject;      
+
+    }
+
+    selectChartToLoad() {
+
+        let loadList = document.createElement("div");
 
 
+        let oldCharts = this.getSavedCharts();
+        let ocObject = JSON.parse(oldCharts);
+
+        if (ocObject == null) {
+            alert("There are no saved charts to load");
+
+            return;
+        }
+
+        
+        for (let i = 0; i < ocObject.length; i++){
+            let newSavedChart = document.createElement("div");
+           
+            console.log("objects ", ocObject[i]);
+            
+            let newObject = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key, ocObject[i].isToolBarChord);
+
+            let chartName = newObject.name + "(" + newObject.getKeyName() + ")";
+
+            newSavedChart.innerText = chartName;
+            newSavedChart.addEventListener("click", () => {
+               
+                let confirmed = confirm(
+                    "Load " + ocObject[i].name + 
+                    " over current chart?\n Current Chart will not be saved."
+                );
+                console.log(confirmed);
+
+                if(confirmed){
+                    console.log("Loading: ", ocObject[i].name);
+                    console.log("this.chart before: ", this.chart);
+                    console.log("loading Chart", ocObject[i]);
+
+                    this.chart = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key);
+
+                    console.log("TC length: ", ocObject[i].toolChords.length);
+                    
+
+                    for (let tci = 0; tci < ocObject[i].toolChords.length; tci++){
+                        let otc = ocObject[i].toolChords[tci];
+                        let newChord = new Chord(otc.id, otc.tone, otc.type, otc.isToolBarChord);
+                        
+                        console.log("TC length: ", ocObject[i].toolChords.length);
+                        console.log("tci: ", tci);
+                        console.log("tci < TC.lenght", tci < ocObject[i].toolChords.length)
+                        this.chart.toolChords.push(newChord);
+                    }
+
+                    for (let mi = 0; mi < ocObject[i].measures.length; mi++){
+
+                        let om = ocObject[i].measures[mi];
+
+                        let newMeasure = new Measure(om.id, om.beats, om.isPageBreak);
+                        
+                        for (let ci = 0; ci < om.chords.length; ci++){
+                            let oc = om.chords[ci];
+                            let newChord = new Chord(oc.id, oc.tone, oc.type, oc.isToolBarChord);
+
+                            newMeasure.chords.push(newChord);
+                        }
+
+                        
+                        
+
+                        for (let li = 0; li < om.chords.length; li++){
+                            let ol = om.lyrics[li];
+                            newMeasure.lyrics.push(ol);
+                        }
+
+                        this.chart.measures.push(newMeasure);
+
+                    }
+                                        
+                    console.log("this.chart after: ", this.chart);
+
+                    this.updateDisplay();
+                    this.viewDisplay.closeLoadModal();
+
+                } else {
+                    return;
+                }
+                
+            }); 
+
+            newSavedChart.style.cursor = "pointer";
+
+            loadList.appendChild(newSavedChart);
+        }
+
+        this.viewDisplay.displayChartsToLoad(loadList);
+
+    }
+
+    loadChart(chart){ 
+        this.chart = chart; // temporary as Object may not have functions 
+
+        console.log("Loading: ", chart.name);
+        console.log("this.chart before: ", this.chart);
+        console.log("loading Chart", chart);
+
+            this.chart = new Chart(chart.id, chart.name, chart.key);
+
+            console.log("TC length: ", chart.toolChords.length);
+            
+
+            for (let tci = 0; tci < chart.toolChords.length; tci++){
+                let otc = chart.toolChords[tci];
+                let newChord = new Chord(otc.id, otc.tone, otc.type, otc.isToolBarChord);
+                
+                console.log("TC length: ", chart.toolChords.length);
+                console.log("tci: ", tci);
+                console.log("tci < TC.lenght", tci < chart.toolChords.length)
+                this.chart.toolChords.push(newChord);
+            }
+
+            for (let mi = 0; mi < chart.measures.length; mi++){
+
+                let om = chart.measures[mi];
+
+                let newMeasure = new Measure(om.id, om.beats, om.isPageBreak);
+                
+                for (let ci = 0; ci < om.chords.length; ci++){
+                    let oc = om.chords[ci];
+                    let newChord = new Chord(oc.id, oc.tone, oc.type, oc.isToolBarChord);
+
+                    newMeasure.chords.push(newChord);
+                }
+
+                
+                
+
+                for (let li = 0; li < om.chords.length; li++){
+                    let ol = om.lyrics[li];
+                    newMeasure.lyrics.push(ol);
+                }
+
+                this.chart.measures.push(newMeasure);
+
+            }
+                                
+            console.log("this.chart after: ", this.chart);
+
+        //this.updateDisplay();
+            
+
+        
+
+        console.log("Loaded chart: ", this.chart);
+    }
+
+    selectColors() {
+        let backgroundList = document.createElement("div");
+        let fontList = document.createElement("div");
+
+        //add backgrounds
+        let whiteBackground = document.createElement("div");
+        let whiteBackgroundBox = document.createElement("span");
+        let whiteBackgroundButton = document.createElement("input");
+        whiteBackgroundBox.classList.add("colorBox");
+        whiteBackgroundBox.style.backgroundColor = "white";
+        whiteBackground.id = "whiteBackground";
+        whiteBackground.innerText = "White";
+        whiteBackground.appendChild(whiteBackgroundBox);
+        whiteBackground.appendChild(whiteBackgroundButton);
+        whiteBackgroundButton.type = "button";
+        whiteBackgroundButton.value = "Select Color";
+        whiteBackgroundButton.addEventListener("click", () => {
+            this.viewDisplay.changeBackgroundColor("white");
+            this.viewDisplay.closeLoadModal();
+        });
+        backgroundList.appendChild(whiteBackground);
+        
+        
+
+        //add fonts
+        let whiteFont= document.createElement("div");
+        let whiteFontBox = document.createElement("span");
+        let whiteFontButton = document.createElement("input");
+        whiteFontBox.classList.add("colorBox");
+        whiteFontBox.style.backgroundColor = "white";
+        whiteFont.id = "whiteFont";
+        whiteFont.innerText = "White";
+        whiteFont.appendChild(whiteFontBox);
+        whiteFont.appendChild(whiteFontButton);
+        whiteFontButton.type = "button";
+        whiteFontButton.value = "Select Color";
+        whiteFontButton.addEventListener("click", () => {
+            this.viewDisplay.changeFontColor("white");
+            this.viewDisplay.closeLoadModal();
+        });
+        fontList.appendChild(whiteFont);
 
 
+        
+        
+        //call display in view
+        this.viewDisplay.displayColorsModal(backgroundList, fontList);
 
 
+    }
+
+    updateColors() {
+
+    }
+
+    getSavedCharts(){
+        return localStorage.getItem("savedCharts");
+    }
 
 
 }

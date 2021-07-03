@@ -93,15 +93,19 @@ h1 {
 
 #header {
     display: grid;
-    grid-template-columns: 20% 60% 20% ;
+    grid-template-columns: 20% 48% 16% 16% ;
     padding: 1%;
 }
 
 #frameToEdit {
     display: grid;
-    grid-template-rows: 20% 60% 20%;
+    grid-template-rows: 45% 10% 45%;
 }
 
+#frameLoad {
+    display: grid;
+    grid-template-rows: 45% 10% 45%;
+}
 
 
 #content {
@@ -167,5 +171,240 @@ h1 {
     z-index: 0;
 }
 
+.pageButtonEnabled {
+    display: "visible";
 
+}
+
+.pageButtonDisabled {
+    display: "hidden";
+
+}
+
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(70, 68, 80, 0.5);
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s, transform 0.25s;
+    z-index: 0;
+}
+
+.loadModal {
+
+    position: absolute;
+    top: 15%;
+    left: 30%;
+    transform: translate (-15%, -50%);
+    background-color: lightgray;
+    border: solid  darkslategray;
+    color: darkslategray;
+    padding: 1rem 1.5rem;
+    width: 24rem;
+    visibility: hidden;
+    z-index: -1;
+        
+}
+
+.closeButton {
+    float: right;
+    width: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    background-color: lightgray;
+    visibility: hidden;
+
+}
+
+.showModal {
+    opacity: 1;
+    display: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0.25s, opacity 0.25s, transform 0.25s;
+ 
+}
+
+.alertModal {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translate (-30%, -50%);
+    background-color: white;
+    border: solid green;
+    color: grey;
+    padding: 1rem 1.5rem;
+    width: 24rem;
+    border-radius: 2rem;
+    visibility: hidden;
+    
+}
+
+
+.rowMeasures1 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+.rowMeasures2 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.rowMeasures3 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 33% 34% 33%;
+}
+
+.rowMeasures4 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+.rowMeasures5 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.rowMeasures6 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 16.5% 16.5% 17% 17% 16.5% 16.5%;
+}
+
+.rowMeasures4 {
+    padding: 1%;
+    margin: 2px;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+
+.measureChords1, .measureLyrics1 {
+    display: grid;
+    grid-template-columns: 100%;
+    font-size: 1em;
+}
+
+.measureChords2, .measureLyrics2 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    font-size: 1em;
+}
+
+.measureChords3, .measureLyrics3 {
+    display: grid;
+    grid-template-columns: 33% 34% 33%;
+    font-size: 1em;
+}
+
+.measureChords4, .measureLyrics4 {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    font-size: 1em;
+}
+
+.measureChords5, .measureLyrics5 {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    font-size: 1em;
+}
+
+.measureChords6, .measureLyrics6 {
+    display: grid;
+    grid-template-columns: 16.6% 16.6% 16.6% 16.6% 16.6% 16.6%;
+}
+
+.measureChords7, .measureLyrics7 {
+    display: grid;
+    grid-template-columns: 14.2% 14.2% 14.2% 14.2% 14.2% 14.2% 14.2%;
+    font-size: 1em;
+}
+
+.measureChords8, .measureLyrics8 {
+    display: grid;
+    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 
+        12.5% 12.5% 12.5% 12.5%;
+    font-size: 1em;
+}
+
+.measureChords9, .measureLyrics9 {
+    display: grid;
+    grid-template-columns: 11.1% 11.1% 11.1% 11.1%
+        11.1% 11.1% 11.1% 11.1% 11.1%;
+    font-size: 1em;
+}
+
+.measureChords10, .measureLyrics10 {
+    display: grid;
+    grid-template-columns: 10% 10% 10% 10% 10% 
+        10% 10% 10% 10% 10%;
+    font-size: 1em;
+}
+
+.measureChords11, .measureLyrics11 {
+    display: grid;
+    grid-template-columns: 9% 9% 9% 9% 9% 
+        9% 9% 9% 9% 9% 9%;
+    font-size: 1em;
+}
+
+.measureChords12, .measureLyrics12 {
+    display: grid;
+    grid-template-columns: 8.3% 8.3% 8.3% 8.3% 8.3%
+        8.3% 8.3% 8.3% 8.3% 8.3% 8.3% 8.3%;
+    font-size: 1em;
+}
+
+.measureChords13, .measureLyrics13 {
+    display: grid;
+    grid-template-columns: 7.6% 7.6% 7.6% 7.6% 7.6% 
+        7.6% 7.6% 7.6% 7.6% 7.6% 7.6% 7.6% 7.6%;
+    font-size: 1em;
+}
+.measureChords14, .measureLyrics14 {
+    display: grid;
+    grid-template-columns: 7.1% 7.1% 7.1% 7.1% 7.1% 
+    7.1% 7.1% 7.1% 7.1% 7.1% 7.1% 7.1% 7.1%;
+    font-size: 1em;
+}
+
+.measureChords15, .measureLyrics15 {
+    display: grid;
+    grid-template-columns: 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%
+        6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6% 6.6%;
+    font-size: 1em;
+}
+
+.measureChords16, .measureLyrics16 {
+    display: grid;
+    grid-template-columns: 6.2% 6.2% 6.2% 6.2% 6.2% 6.2%
+        6.2% 6.2% 6.2% 6.2% 6.2% 6.2% 6.2% 6.2% 6.2% 6.2%;
+    font-size: 1em;
+}
+
+.colorBox {
+    display: inline-block;
+    border: solid black 3px;
+    width: 20px;
+    padding: 3px;
+    margin: 3px;
+}
 
