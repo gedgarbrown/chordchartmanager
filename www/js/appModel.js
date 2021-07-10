@@ -1,10 +1,14 @@
+/*******************************************************************
+ * Chart
+ *******************************************************************/
+
 export class Chart {
     constructor (id, name, key = 0) {
         this.name = name;
         this.id = id;
         this.measures = [];
         this.lines = [];
-        this.key;
+        this.key = key;
         this.toolChords = [];
     }
 
@@ -50,6 +54,7 @@ export class Chart {
 
     setKey(key = 0) {
 
+        
         key = parseInt(key);
 
         if (isNaN(key)){
@@ -130,6 +135,10 @@ export class Chart {
 
 }
 
+/*******************************************************************
+ * Measure
+ *******************************************************************/
+
 export class Measure {
     constructor (id, beats, isPageBreak = false) {
         this.id = id;
@@ -151,7 +160,9 @@ export class Measure {
 
     }
 
-    addLyric(newLyric) {
+    addLyric(newLyric, index) {
+
+        this.lyrics[index] = newLyric;
 
     }
 
@@ -169,6 +180,10 @@ export class Measure {
 
 
 }
+
+/*******************************************************************
+ * Chord
+ *******************************************************************/
 
 export class Chord {
     constructor (id, tone, type, isToolBarChord = false){
@@ -202,7 +217,7 @@ export class Chord {
 
     getToneName () {
         
-       // console.log("getting tone name for: ", this.tone);
+       
         switch (+this.tone) {
             case 11:
                 return "B";

@@ -1,3 +1,7 @@
+/*******************************************************************
+ * Edit Display
+ *******************************************************************/
+
 export class EditDisplay {
     constructor() {
         this.idGenerator = 0;
@@ -19,8 +23,10 @@ export class EditDisplay {
 
     }
 
-    displayKeyChange() {
-        //this.displayChordsForToolBar(chords);
+    displayKey(newKey) {
+        let key = document.getElementById("key");
+        key.value = newKey;
+
     }
 
     displayItemChange() {
@@ -33,19 +39,14 @@ export class EditDisplay {
     }
 
     displayChordInToolBar(chord) {
-       
         let toolBarChords = document.getElementById("frameChords");
         
         toolBarChords.appendChild(chord);
-        
-        
-
-        
     }
 
     renderEdit(chart) {
         
-        this.displayKeyChange(chart.getKey());
+        this.displayKey(chart.getKey());
         //this.displayChordsForToolBar(chart.toolChords);
         //this.displayMeasures(chart.measures);
         this.displayTitle(chart.name);
@@ -139,6 +140,11 @@ export class EditDisplay {
 
 
 }
+
+/*******************************************************************
+ * View Display
+ *******************************************************************/
+
 
 export class ViewDisplay {
     moveToEdit() {
@@ -237,7 +243,15 @@ export class ViewDisplay {
                     beatChord.innerText = currentChord.getChordName();
                 }
 
-                beatLyric.innerHTML = "&nbsp;";
+                let currentLyric = measures[i].lyrics[x];
+
+                if (!currentLyric) {
+                    beatLyric.innerHTML = "&nbsp;";
+                } else {
+                    beatLyric.innerHTML = "";
+                    beatLyric.innerText = currentLyric;
+                }
+               
 
                 measureChords.appendChild(beatChord);
                 measureLyrics.appendChild(beatLyric);

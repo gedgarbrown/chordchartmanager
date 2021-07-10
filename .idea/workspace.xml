@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8ce14262-4fce-4532-a09b-1445334d3dc5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/css/edit.css" beforeDir="false" afterPath="$PROJECT_DIR$/www/css/edit.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/css/view.css" beforeDir="false" afterPath="$PROJECT_DIR$/www/css/view.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/js/appController.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/appController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/js/appModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/appModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/js/appView.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/appView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/editMain.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/editMain.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/viewMain.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/viewMain.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +21,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1rjPW4IA1eE47NK60TDluCh2Ui9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -115,10 +115,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="181" y="245" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620401198488" />
-    <state x="153" y="189" width="1220" height="693" key="AVDManager" timestamp="1624751465900">
+    <state x="153" y="189" width="1220" height="693" key="AVDManager" timestamp="1625869242623">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="153" y="189" width="1220" height="693" key="AVDManager/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1624751465900" />
+    <state x="153" y="189" width="1220" height="693" key="AVDManager/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1625869242623" />
     <state x="153" y="189" width="1220" height="693" key="AVDManager/0.0.1920.1040@0.0.1920.1040" timestamp="1622755132110" />
     <state x="523" y="265" key="AndroidProcessChooserDialog" timestamp="1622747994027">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -134,9 +134,10 @@
     <state x="-1235" y="143" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1621125271322" />
     <state x="282" y="210" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620515420619" />
     <state x="282" y="210" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1622755099386" />
-    <state x="419" y="250" key="run.anything.popup" timestamp="1622755076034">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="-1501" y="250" key="run.anything.popup" timestamp="1625869231426">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state x="-1501" y="250" key="run.anything.popup/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1625869231426" />
     <state x="419" y="250" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1622755076034" />
   </component>
 </project>

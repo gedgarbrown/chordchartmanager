@@ -33,7 +33,6 @@ body {
     padding:0px;
     /* Padding to avoid the "unsafe" areas behind notches in the screen */
     padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
-    text-transform:uppercase;
     width:100%;
     display: grid;
     grid-template-rows: 10% 90%;
@@ -128,7 +127,6 @@ h1 {
 }
 
 .chord {
-    border: dashed darkgrey 1px;
     padding: 3px;
     margin: 2px;
 }
@@ -408,3 +406,7 @@ h1 {
     margin: 3px;
 }
 
+.colorSelection {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}

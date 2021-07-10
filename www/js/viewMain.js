@@ -6,9 +6,10 @@ let viewController = new ViewController();
 
 //Header controls
 document.getElementById("buttonToEdit").addEventListener("click", () => {
-     window.location = "edit.html";});
+     window.location = "edit.html";
+    });
 document.getElementById("load").addEventListener("click", () => {
-    viewController.selectChartToLoad();
+    viewController.loadChartMenu();
 });
 document.getElementById("colors").addEventListener("click", () => {
     viewController.selectColors();

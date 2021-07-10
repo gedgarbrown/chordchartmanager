@@ -12,10 +12,11 @@ document.getElementById("buttonToView").addEventListener("click",
     () => { window.location = "view.html";
           localStorage.setItem("currentChart", JSON.stringify(editController.chart));
     });
-document.getElementById("buttonSave").addEventListener("click", 
-    () => {editController.saveChart();});
+document.getElementById("buttonSave").addEventListener("click",  () => {
+    editController.saveChart();
+    });
 document.getElementById("buttonLoad").addEventListener("click", 
-    () => {editController.loadChart();});
+    () => {editController.loadChartMenu();});
 document.getElementById("title").addEventListener("click", 
     () => {editController.changeChartName()});
 //toolbar controls

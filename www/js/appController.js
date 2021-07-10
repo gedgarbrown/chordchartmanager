@@ -1,32 +1,28 @@
 import {Chart, Chord, Measure} from "./appModel.js";
 import {EditDisplay, ViewDisplay} from "./appView.js";
-//import {getKeyFromCode} from "./utilities.js";
 
+/*******************************************************************
+ * Edit Controller
+ *******************************************************************/
 
 export class EditController {
     constructor() {
 
         this.idGenerator = 1;
-        this.chart = new Chart(Date.now(), "New Chart");
+        this.loadChart(this.getCurrentChart());
     
-        console.log("Measures created:", this.chart.measures);
-
         this.editDisplay = new EditDisplay();
         this.updateKey();
-        this.createToolBarChords(0);
-        //adding default measures
-        for (let i = 0; i < 6; i++){
-            this.addMeasure();
-        }
-
+       
         
+       
+
         this.updateDisplay();
         
     }
 
     updateDisplay() {
     
-        
         this.updateChordToolBar();   
              
         this.editDisplay.renderEdit(this.chart);
@@ -34,44 +30,56 @@ export class EditController {
         
     }
 
+    getCurrentChart() {
+
+        let currentChart = localStorage.getItem("currentChart");
+        let ccObject = JSON.parse(currentChart);
+
+        if (ccObject == null){
+
+             return new Chart(Date.now(), "New Chart", 0);
+        } 
+
+        return ccObject;      
+
+    }
+
     updateKey() {
         
         let newKey = document.getElementById('key').value;
         let willTranspose = document.getElementById('transpose').checked;
-        //console.log(newKey);
-        
+               
         let oldKey = this.chart.getKey();
         this.chart.setKey(newKey);
 
-        //this.createToolBarChords(newkey);
+        console.log("this chart set to: ", this.chart.key);
+
         this.transposeToolBarChords(oldKey, newKey);
+        console.log("will transpose:", willTranspose);
 
+        if(willTranspose) {
+            this.transposeChartChords(oldKey, newKey);
+        }
         
-
-        this.updateChordToolBar();
-        console.log(this.chart.toolChords);
+        this.updateDisplay();
+        
     }
 
     createToolBarChords(key) {
-
-        //let chords = [];
-
-       
+ 
         //create tonic
         let tonic = new Chord(this.idGenerator++, key, "", true);
         this.chart.toolChords.push(tonic);
+        
         //tonic Major 7
         let tonicM7 = new Chord(this.idGenerator++, key, "M7", true);
         this.chart.toolChords.push(tonicM7);
 
-        
         //create subdominant
-        
         let subdominant = new Chord(
             this.idGenerator++, 
             tonic.getSubdominant(tonic.getTone()), "", true
         );
-
         this.chart.toolChords.push(subdominant);
 
         //create dominant
@@ -79,19 +87,16 @@ export class EditController {
             this.idGenerator++, tonic.getDominant(tonic.getTone()),
             "", true
         );
-
         this.chart.toolChords.push(dominant);
+        
         // dominant with 7
         let dominant7 = new Chord(
             this.idGenerator++, tonic.getDominant(tonic.getTone()),
             "7", true
         );
         this.chart.toolChords.push(dominant7);
-        
         console.log("chords array:", this.chart.toolChords)
-        
-        
-        //return chords;
+
     }
 
     transposeToolBarChords (oldKey, newKey) {
@@ -100,6 +105,17 @@ export class EditController {
             this.chart.toolChords[i].transposeKey(oldKey, newKey);        
         }
     
+    }
+
+    transposeChartChords (oldKey, newKey){
+
+        for (let mi = 0; mi < this.chart.measures.length; mi++){
+
+            for (let ci = 0; ci < this.chart.measures[mi].chords.length; ci++){
+                this.chart.measures[mi].chords[ci].transposeKey(oldKey, newKey);
+            }
+        }
+
     }
 
     addCustomChord() {
@@ -113,7 +129,6 @@ export class EditController {
     }
 
     updateChordToolBar() {
-
         
         let chords = this.chart.toolChords;
         this.editDisplay.clearChordsForToolBar();
@@ -121,15 +136,11 @@ export class EditController {
         
         for (let i = 0; i < chords.length; i++){
 
-        
             let newChord = document.createElement("div");
-
             newChord.classList.add("chordOption");
-           
-            
         
             let toneName =  chords[i].getToneName();
-            //console.log("adding Tone Name:", toneName);
+
             newChord.innerText = toneName + chords[i].type;
             newChord.id = chords[i].id;
             
@@ -137,8 +148,6 @@ export class EditController {
 
             chordData.id = chords[i].id;
             chordData.isToolBarChord = true;
-
-
 
             newChord.draggable = true;
             newChord.ondragstart = (ev) => {
@@ -248,6 +257,7 @@ export class EditController {
                 };
                 
                 
+                
                 let currentChord = measures[i].chords[x];
                 
                 if (!currentChord){
@@ -259,14 +269,26 @@ export class EditController {
                 }
                   
                 
-                //TODO add lyrics
-                beatLyric.draggable = true;
+                //add lyrics
+                beatLyric.draggable = false;
 
-                beatLyric.innerHTML = "&nbsp;";
+                let currentLyric = measures[i].lyrics[x];
 
+                if(!currentLyric) {
+                     beatLyric.innerHTML = "&nbsp;";
+                } else {
+                    beatLyric.innerHTML = "";
+                    beatLyric.innerText = currentLyric;
+                }
+               
+               
 
                 measureChords.appendChild(beatChord);
                 measureLyrics.appendChild(beatLyric);
+
+                beatLyric.addEventListener("click", () => {
+                    this.addLyric(measures[i], x, beatLyric);
+                });
 
             }
 
@@ -288,8 +310,8 @@ export class EditController {
             this.placeOnEmptyChord(ev, droppedData);
         }
         else {
-            
-            ev.target.innerHTML = "Move++";
+            //todo move chord
+            this.placeOnFullChord(ev, droppedData);
 
         }
         
@@ -298,9 +320,6 @@ export class EditController {
     }
 
     placeOnEmptyChord(ev, droppedData) {
-
-        console.log("Starting drop event loop: ");
-
 
             let toolChord = this.chart.toolChords.find(obj => {
                 return obj.id == droppedData.id;
@@ -344,6 +363,10 @@ export class EditController {
 
     }
 
+    placeOnFullChord (ev, droppedData) { 
+        ev.target.innerHTML = "Move++";
+    }
+
     addMeasure() {
         let bpm = document.getElementById("bpm").value;
         if(isNaN(bpm) || bpm < 1){
@@ -363,10 +386,9 @@ export class EditController {
         this.updateDisplay();
     }
 
-    loadChart() {
+    loadChartMenu() {
 
         let loadList = document.createElement("div");
-
 
         let oldCharts = this.getSavedCharts();
         let ocObject = JSON.parse(oldCharts);
@@ -401,48 +423,7 @@ export class EditController {
                     console.log("this.chart before: ", this.chart);
                     console.log("loading Chart", ocObject[i]);
 
-                    this.chart = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key);
-
-                    console.log("TC length: ", ocObject[i].toolChords.length);
-                    
-
-                    for (let tci = 0; tci < ocObject[i].toolChords.length; tci++){
-                        let otc = ocObject[i].toolChords[tci];
-                        let newChord = new Chord(otc.id, otc.tone, otc.type, otc.isToolBarChord);
-                        
-                        console.log("TC length: ", ocObject[i].toolChords.length);
-                        console.log("tci: ", tci);
-                        console.log("tci < TC.lenght", tci < ocObject[i].toolChords.length)
-                        this.chart.toolChords.push(newChord);
-                    }
-
-                    for (let mi = 0; mi < ocObject[i].measures.length; mi++){
-
-                        let om = ocObject[i].measures[mi];
-                        console.log("Is Page Break: ", om.isPageBreak);
-
-                        let newMeasure = new Measure(om.id, om.beats, om.isPageBreak);
-                        
-                        for (let ci = 0; ci < om.chords.length; ci++){
-                            let oc = om.chords[ci];
-                            let newChord = new Chord(oc.id, oc.tone, oc.type, oc.isToolBarChord);
-
-                            newMeasure.chords.push(newChord);
-                        }
-
-                        
-                        
-
-                        for (let li = 0; li < om.chords.length; li++){
-                            let ol = om.lyrics[li];
-                            newMeasure.lyrics.push(ol);
-                        }
-
-                        this.chart.measures.push(newMeasure);
-
-                    }
-                                        
-                    console.log("this.chart after: ", this.chart);
+                    this.loadChart(ocObject[i]);
 
                     this.updateDisplay();
                     this.editDisplay.closeLoadModal();
@@ -459,6 +440,62 @@ export class EditController {
         }
 
         this.editDisplay.displayChartsToLoad(loadList);
+    }
+
+    loadChart(chart){ 
+
+        console.log("Loading: ", chart.name);
+        console.log("this.chart before: ", this.chart);
+        console.log("loading Chart", chart);
+
+            this.chart = new Chart(chart.id, chart.name, chart.key);
+
+            console.log("TC length: ", chart.toolChords.length);
+            
+
+            for (let tci = 0; tci < chart.toolChords.length; tci++){
+                let otc = chart.toolChords[tci];
+                let newChord = new Chord(otc.id, otc.tone, otc.type, otc.isToolBarChord);
+                
+                console.log("TC length: ", chart.toolChords.length);
+                console.log("tci: ", tci);
+                console.log("tci < TC.lenght", tci < chart.toolChords.length)
+                this.chart.toolChords.push(newChord);
+            }
+
+            for (let mi = 0; mi < chart.measures.length; mi++){
+
+                let om = chart.measures[mi];
+
+                let newMeasure = new Measure(om.id, om.beats, om.isPageBreak);
+                
+                for (let ci = 0; ci < om.chords.length; ci++){
+                    let oc = om.chords[ci];
+                    let newChord = new Chord(oc.id, oc.tone, oc.type, oc.isToolBarChord);
+
+                    newMeasure.chords.push(newChord);
+                }
+
+                
+                
+
+                for (let li = 0; li < om.chords.length; li++){
+                    let ol = om.lyrics[li];
+                    newMeasure.lyrics.push(ol);
+                }
+
+                this.chart.measures.push(newMeasure);
+
+            }
+                                
+            console.log("this.chart after: ", this.chart);
+
+        //this.updateDisplay();
+            
+
+        
+
+        console.log("Loaded chart: ", this.chart);
     }
 
     saveChart() {
@@ -553,16 +590,35 @@ export class EditController {
     }
 
     changeChartName(){
-        let newName = prompt("Please enter the new chart name: ", )
-        this.chart.setName(newName);
+        let newName = prompt("Please enter the new chart name: ");
+
+        if (newName ){
+            this.chart.setName(newName);
+        }
+        
         this.updateDisplay();
     }
 
+    addLyric(measure, index, domLyric) {
+       
+        let newLyric = prompt("Please enter the new lyric: ");
+        
+        if (newLyric) {
+            measure.addLyric(newLyric, index);
+            domLyric.innerText = newLyric;
+        }
+        
 
+        
+    }
 
     
 
 }
+
+/*******************************************************************
+ * View Controller
+ *******************************************************************/
 
 export class ViewController{
     constructor() {
@@ -585,6 +641,10 @@ export class ViewController{
 
         this.updateDisplay();
 
+    }
+
+    updateDisplay() {
+        this.viewDisplay.renderView(this.chart, this.page);
     }
 
     prevPage() {
@@ -683,9 +743,7 @@ export class ViewController{
         return maxPages;
 
     }
-    updateDisplay() {
-        this.viewDisplay.renderView(this.chart, this.page);
-    }
+    
 
     getCurrentChart() {
 
@@ -701,7 +759,7 @@ export class ViewController{
 
     }
 
-    selectChartToLoad() {
+    loadChartMenu() {
 
         let loadList = document.createElement("div");
 
@@ -800,7 +858,6 @@ export class ViewController{
     }
 
     loadChart(chart){ 
-        this.chart = chart; // temporary as Object may not have functions 
 
         console.log("Loading: ", chart.name);
         console.log("this.chart before: ", this.chart);
@@ -861,43 +918,116 @@ export class ViewController{
         let fontList = document.createElement("div");
 
         //add backgrounds
-        let whiteBackground = document.createElement("div");
-        let whiteBackgroundBox = document.createElement("span");
-        let whiteBackgroundButton = document.createElement("input");
-        whiteBackgroundBox.classList.add("colorBox");
-        whiteBackgroundBox.style.backgroundColor = "white";
-        whiteBackground.id = "whiteBackground";
-        whiteBackground.innerText = "White";
-        whiteBackground.appendChild(whiteBackgroundBox);
-        whiteBackground.appendChild(whiteBackgroundButton);
-        whiteBackgroundButton.type = "button";
-        whiteBackgroundButton.value = "Select Color";
-        whiteBackgroundButton.addEventListener("click", () => {
-            this.viewDisplay.changeBackgroundColor("white");
-            this.viewDisplay.closeLoadModal();
-        });
-        backgroundList.appendChild(whiteBackground);
-        
+       
+
+        for (let c = 0; c < 5; c++){
+            let color = "";
+            let colorName ="";
+            switch(c) {
+                case 0:
+                    color = "white";
+                    colorName = "White";
+                break;
+                case 1:
+                    color = "antiquewhite";
+                    colorName = "Antique White";
+                break;
+                case 2:
+                    color = "darkkhaki";
+                    colorName = "Dark Khaki";
+                break;
+                case 3:
+                    color = "darkgray";
+                    colorName = "Dark Gray";
+                break;
+                case 4:
+                    color = "black";
+                    colorName = "Black";
+                break;
+                default:
+                    color = "white";
+                    colorName = "White";
+                break;
+
+            }
+
+
+            let background = document.createElement("div");
+            let backgroundBox = document.createElement("span");
+            let backgroundButton = document.createElement("input");
+            backgroundBox.classList.add("colorBox");
+            background.classList.add("colorSelection");
+            backgroundBox.style.backgroundColor = color;
+            background.id = color + "Background";
+            background.innerText = colorName;
+            background.appendChild(backgroundBox);
+            background.appendChild(backgroundButton);
+            backgroundButton.type = "button";
+            backgroundButton.value = "Select Color";
+            backgroundButton.addEventListener("click", () => {
+                 this.viewDisplay.changeBackgroundColor(color);
+                 this.viewDisplay.closeLoadModal();
+            });
+            backgroundList.appendChild(background);
+            
+        }
         
 
         //add fonts
-        let whiteFont= document.createElement("div");
-        let whiteFontBox = document.createElement("span");
-        let whiteFontButton = document.createElement("input");
-        whiteFontBox.classList.add("colorBox");
-        whiteFontBox.style.backgroundColor = "white";
-        whiteFont.id = "whiteFont";
-        whiteFont.innerText = "White";
-        whiteFont.appendChild(whiteFontBox);
-        whiteFont.appendChild(whiteFontButton);
-        whiteFontButton.type = "button";
-        whiteFontButton.value = "Select Color";
-        whiteFontButton.addEventListener("click", () => {
-            this.viewDisplay.changeFontColor("white");
-            this.viewDisplay.closeLoadModal();
-        });
-        fontList.appendChild(whiteFont);
+       
 
+        for (let c = 0; c < 5; c++){
+            let color = "";
+            let colorName ="";
+            switch(c) {
+                case 0:
+                    color = "white";
+                    colorName = "White";
+                break;
+                case 1:
+                    color = "antiquewhite";
+                    colorName = "Antique White";
+                break;
+                case 2:
+                    color = "darkkhaki";
+                    colorName = "Dark Khaki";
+                break;
+                case 3:
+                    color = "darkgray";
+                    colorName = "Dark Gray";
+                break;
+                case 4:
+                    color = "black";
+                    colorName = "Black";
+                break;
+                default:
+                    color = "white";
+                    colorName = "White";
+                break;
+
+            }
+
+
+            let font = document.createElement("div");
+            let fontBox = document.createElement("span");
+            let fontButton = document.createElement("input");
+            fontBox.classList.add("colorBox");
+            font.classList.add("colorSelection");
+            fontBox.style.backgroundColor = color;
+            font.id = color + "Font";
+            font.innerText = colorName;
+            font.appendChild(fontBox);
+            font.appendChild(fontButton);
+            fontButton.type = "button";
+            fontButton.value = "Select Color";
+            fontButton.addEventListener("click", () => {
+                 this.viewDisplay.changeFontColor(color);
+                 this.viewDisplay.closeLoadModal();
+            });
+
+            fontList.appendChild(font);
+            
+        }
 
         
         
