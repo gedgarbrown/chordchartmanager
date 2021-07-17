@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-* {
+ * {
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
 
@@ -89,7 +89,13 @@ body {
         
         width:100%;
         display: grid;
-        grid-template-rows: 20% auto;
+        grid-template-rows: 10% auto;
+    }
+
+    #header {
+        display: grid;
+        grid-template-columns: 30% 45% 10% 15% ;
+        padding: 1%;
     }
 
     #content {
@@ -102,52 +108,94 @@ body {
     #tools {
         border: grey 2px;
         display: grid;
-        grid-template-columns: 45% 55%; 
+        grid-template-rows: 30% auto !important; 
         direction: rtl; 
         padding: 1%;
         font-size: 0.5rem;
-        height: 300px;
-    }
-
-    #frameOtherButtons {
-        padding: 2%;
-        display: grid;
-        grid-template-rows: 34% 17% 34% 15%;
-        height: 300px;
-    }
-    
-    #frameChords {
-        display: flex;
-        flex-direction: column;
-        border: solid grey 2px;
-        padding: 1%;
-        margin: 1px;
-        height: 300px;
-        overflow-y: scroll;
+        height: 100%;
     }
 
     #chartDisplay{
         display: grid;
-        grid-template-rows: 1rem auto 3rem;
+        grid-template-rows: 10% 80% 10% !important;
         height: auto;
         overflow-y: scroll;
     }
 
-   
+    #frameKeyChange {
+        display: grid;
+        grid-template-columns: 30% 45% 25% !important;
+    }
+    
+    #frameTranspose {
+        font-size: 0.5rem;
+    }
+    
+    #frameToView {
+        display: grid;
+        grid-template-columns: 1% 98% 1%;
+    }
+    
+    #frameSaveEdit {
+        display: grid;
+        grid-template-columns: 49% 2% 49%;
+    }
+
+
+    #frameOtherButtons {
+        padding: 2%;
+        display: grid;
+        grid-template-rows: 39% 12% 34% 15% !important;
+        height: 100%;
+    }
+    
+    #frameChords {
+        display: block;
+        flex-direction: column;
+        border: solid grey 2px;
+        padding: 1%;
+        margin: 1px;
+        overflow-y: scroll;
+    }
+ 
 
     #contentWindow {
         
         padding: 1%;
         border: solid grey 2px;
         margin-top: 2px;
-        height: 300px;
-        
+        height: 100%;
         z-index: 0; 
     }
     
+    #frameCustomChord {
+        border: solid grey 2px;
+        padding: 1%;
+        margin: 1px;
+        display: grid;
+        grid-template-rows: 40% 60%;
+    }
     
+    #addCustomChord {
+        font-size: 0.7rem;
+    }
 
+    #frameCustomChordButton {
+        margin: 2px;
+        font-size: 0.7rem;
+    }
+    
+    #chordType {
+        padding: 1%;
+        margin: 2%;
+        
+        width: 20px; 
+        font-size: 0.7rem;
+    }
 
+    #frameMpr {
+        min-height: 4rem;
+    }
 
 } 
 
@@ -255,13 +303,14 @@ h1 {
 #frameCustomChord {
     border: solid grey 2px;
     padding: 1%;
-    margin: 1px;
+    margin-top: 2px;
     display: grid;
     grid-template-rows: 40% 60%;
-
+    margin-top: 2px;
 }
 
 #frameCustomChordButton {
+   
     margin: 2px;
 
 }
@@ -539,6 +588,7 @@ h1 {
 }
 
 #importLyrics, #addPageTurn, #addMeasure, #export {
+    margin-top: 2px;
     overflow-wrap: break-word;
     display: inline-block;
     white-space: normal;
