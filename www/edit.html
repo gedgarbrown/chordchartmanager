@@ -69,6 +69,9 @@
                     <input type="checkbox" id="transpose" name="transpose" value="transpose">
                     <label for="transpose">Transpose</label>
                 </div>
+                <div id="frameSetKey">
+                    <input type="button" id="setKey" name="setKey" value="apply">
+                </div>
             </div>
             <div id="chartTitle">
                 <h1 id="title">Chart Title</h1>
@@ -108,41 +111,43 @@
                         G
                     </div>
                 </div>
-                <div id="frameCustomChord" class="toolItem">
-                    <div id="frameCustomChordButton">
-                        <input id="addCustomChord" type="button" value="+ chord">
-
-                    </div>
-                    <div>
-                        <div>
-                            <select name="chordKey" id="chordKey" class="toolItem">
-                                <option value="0">C</option>
-                                <option value="1">C♯</option>
-                                <option value="101">D♭</option>
-                                <option value="2">D</option>
-                                <option value="3">D♯</option>
-                                <option value="103">E♭</option>
-                                <option value="4">E</option>
-                                <option value="5">F</option>
-                                <option value="6">F♯</option>
-                                <option value="106">G♭</option>
-                                <option value="7">G</option>
-                                <option value="8">G♯</option>
-                                <option value="108">A♭</option>
-                                <option value="9">A</option>
-                                <option value="10">A♯</option>
-                                <option value="110">B♭</option>
-                                <option value="11">B</option> 
-                            </select> 
-                         </div>
-                         <div>
-                            <input id="chordType" class="toolItem" type="text" maxlength="10">
-                         </div>
-                        
-
-                    </div>
-                </div>
+                               
                 <div id="frameOtherButtons">
+                    <div id="frameCustomChord" class="toolItem">
+                        <div id="frameCustomChordButton">
+                            <input id="addCustomChord" type="button" value="+ chord">
+    
+                        </div>
+                        <div>
+                            <div>
+                                <select name="chordKey" id="chordKey" class="toolItem">
+                                    <option value="0">C</option>
+                                    <option value="1">C♯</option>
+                                    <option value="101">D♭</option>
+                                    <option value="2">D</option>
+                                    <option value="3">D♯</option>
+                                    <option value="103">E♭</option>
+                                    <option value="4">E</option>
+                                    <option value="5">F</option>
+                                    <option value="6">F♯</option>
+                                    <option value="106">G♭</option>
+                                    <option value="7">G</option>
+                                    <option value="8">G♯</option>
+                                    <option value="108">A♭</option>
+                                    <option value="9">A</option>
+                                    <option value="10">A♯</option>
+                                    <option value="110">B♭</option>
+                                    <option value="11">B</option> 
+                                </select> 
+                             </div>
+                             <div>
+                                <input id="chordType" class="toolItem" type="text" maxlength="10">
+                             </div>
+                            
+    
+                        </div>
+                    </div>
+                    
                     <div id="framePageTurn" class="toolItem">
                         <input id="addPageTurn" type="button" value="+ page turn">
                     </div>
@@ -156,16 +161,11 @@
                          </div>
 
                     </div>
-                    
-                    <div id="frameImportLyrics" class="toolItem">
-                        <input id="importLyrics" type="button" value="import lyrics">
-                    </div>
-                    <div id="frameExport" class="toolItem">
-                        <input id="export" type="button" value="export">
-                    </div>
+                                   
                     <div id="frameNewChart" class="toolItem">
                         <input id="newChart" type="button" value="+ chart">
                     </div>
+                    
                     
                 </div>
                     
@@ -176,16 +176,26 @@
                     <label for="mpr">Measures Per Row</label>
                      <input id="mpr" type="number" value="3" min="1" max="6">
                 </div>
+
+                <div id="contentWindow">
+                    <div id="chartContent">
+
+                    </div>
+                </div>  
             
-                <div id="chartContent">
-                 
-                </div>
+                <div id="frameDeleteChord">
+                    <div id="deleteChord">
+                        <img id="imgTrash" src="./img/trashcan.png"/>
+                    </div>
+                 </div>
+              
             </div>
+            
         </div>
        
        
 
-        <script src="cordova.js"></script>
+       <!-- <script src="cordova.js"></script> -->
         <script type="module" src="js/editMain.js"></script>
     </body>
 </html>

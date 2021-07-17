@@ -30,6 +30,12 @@
     :root {
         --toolBarWidth: 80px;
     }
+
+    #frameTranspose {
+        font-size: 0.5rem;
+    }
+    
+
 }
 
 body {
@@ -39,7 +45,7 @@ body {
     background-color:#E4E4E4;
     background-image:linear-gradient(to bottom, #A7A7A7 0%, #E4E4E4 51%);
     font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
-    font-size:12px;
+    font-size: 0.7rem;
     height:100vh;
     margin:0px;
     padding:0px;
@@ -48,7 +54,7 @@ body {
     
     width:100%;
     display: grid;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: min(20%, 100px) auto;
 }
 
 /* Portrait layout (default) */
@@ -65,19 +71,101 @@ body {
                                    /* offset horizontal: half of text area width */
 }
 
+@media (max-height: 400px){
+
+    body {
+        -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+        -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+        -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+        background-color:#E4E4E4;
+        background-image:linear-gradient(to bottom, #A7A7A7 0%, #E4E4E4 51%);
+        font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+        font-size: 0.7rem;
+        height:100vh;
+        margin:0px;
+        padding:0px;
+        /* Padding to avoid the "unsafe" areas behind notches in the screen */
+        padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+        
+        width:100%;
+        display: grid;
+        grid-template-rows: 20% auto;
+    }
+
+    #content {
+        display: grid;
+        grid-template-columns: 40% auto;
+        padding: 1%;
+        
+    }
+
+    #tools {
+        border: grey 2px;
+        display: grid;
+        grid-template-columns: 45% 55%; 
+        direction: rtl; 
+        padding: 1%;
+        font-size: 0.5rem;
+        height: 300px;
+    }
+
+    #frameOtherButtons {
+        padding: 2%;
+        display: grid;
+        grid-template-rows: 34% 17% 34% 15%;
+        height: 300px;
+    }
+    
+    #frameChords {
+        display: flex;
+        flex-direction: column;
+        border: solid grey 2px;
+        padding: 1%;
+        margin: 1px;
+        height: 300px;
+        overflow-y: scroll;
+    }
+
+    #chartDisplay{
+        display: grid;
+        grid-template-rows: 1rem auto 3rem;
+        height: auto;
+        overflow-y: scroll;
+    }
+
+   
+
+    #contentWindow {
+        
+        padding: 1%;
+        border: solid grey 2px;
+        margin-top: 2px;
+        height: 300px;
+        
+        z-index: 0; 
+    }
+    
+    
+
+
+
+} 
+
+
 /* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+@media screen and (min-aspect-ratio: 3/4) and (min-width:400px) {
     .app {
         background-position:left center;
         padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
         margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
                                       /* offset horizontal: half of image width and text area width */
     }
+
 }
 
 
 h1 {
-    font-size:24px;
+    font-size:2rem;
     font-weight:normal;
     margin:0px;
     overflow:visible;
@@ -106,8 +194,18 @@ h1 {
 
 #header {
     display: grid;
-    grid-template-columns: 20% 48% 16% 16% ;
+    grid-template-columns: 25% 45% 15% 15% ;
     padding: 1%;
+}
+
+
+#frameKeyChange {
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+}
+
+#frameTranspose {
+    font-size: 0.5rem;
 }
 
 #frameToView {
@@ -122,7 +220,7 @@ h1 {
 
 #content {
     display: grid;
-    grid-template-columns: min(15%, 100px) auto;
+    grid-template-columns: min(30%, 100px) auto;
     padding: 1%;
     
 }
@@ -130,19 +228,21 @@ h1 {
 #tools {
     border: grey 2px;
     display: grid;
-    grid-template-rows: 45% 15% 40%;  
+    grid-template-rows: 45% 55%;  
     padding: 1%;
     min-width: 75px;
    
 }
 
 #frameChords {
+    display: flex;
+    flex-direction: column;
     border: solid grey 2px;
     padding: 1%;
     margin: 1px;
     position: relative;
-    overflow-y: auto;
-
+    overflow-y: scroll;
+    height: 100%
 }
 
 .chordOption {
@@ -156,7 +256,6 @@ h1 {
     border: solid grey 2px;
     padding: 1%;
     margin: 1px;
-    position: relative;
     display: grid;
     grid-template-rows: 40% 60%;
 
@@ -176,7 +275,7 @@ h1 {
 
 #chartDisplay{
     display: grid;
-    grid-template-rows: 3% 97%;
+    grid-template-rows: 3% 87% 10%;
     height: 100%;
    
 }
@@ -185,17 +284,50 @@ h1 {
   max-height: 30px;
 }
 
-#chartContent{
+
+#contentWindow {
+    display: flex;
+    flex-direction: column;
     padding: 1%;
     border: solid grey 2px;
     margin-top: 2px;
-    overflow: auto;
+    overflow-y: scroll; 
+    z-index: 0; 
+    height: 100%;
+}
+
+#imgTrash {
+    display: block;
+    width: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    
+}
+
+#frameDeleteChord{
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+
+}
+
+
+#deleteChord {
+    position: relative;
+    background-image: radial-gradient(crimson, gold);
+    border: 2px solid crimson;
+    padding: 1px;
+    margin-top: 1px;
+    
 }
 
 #frameOtherButtons {
     padding: 2%;
     display: grid;
-    grid-template-rows: 17% 34% 17% 11% 11%;
+    grid-template-rows: 34% 17% 34% 15%;
 }
 
 .toolItem {
@@ -203,10 +335,25 @@ h1 {
 }
 
 .measure {
-    border-left: solid 2px;
-    border-right: solid 2px;
+    
     display: grid;
     grid-template-rows: 50% 50%;
+}
+
+.measureShell {
+    display: grid;
+    grid-template-columns: 0.5rem auto;
+    border-left: solid 2px;
+    border-right: solid 2px;
+    margin-right: 1px;
+    margin-left: 1px;
+    padding: 1px;
+}
+
+.measureGrabber{
+    border: 1px solid lightseagreen;
+    text-align: center;
+    background-color: lightseagreen;
 }
 
 .pageBreak {
@@ -397,7 +544,7 @@ h1 {
     white-space: normal;
     max-width: 70px;
     width: 95%;
-    font-size: 1em;
+    font-size: 0.7rem;
 }
 
 #frameAddMeasureButton {
@@ -405,20 +552,21 @@ h1 {
 }
 
 #frameAddMeasure {
-    border: solid 1px;
+    border: solid 1px grey;
     display: grid;
     grid-template-rows: 50% 50%;
 }
 
 #addMeasure {
-    font-size: 0.9em;
+    margin-top: 10%;
+    font-size: 0.7rem;
 }
 
 #frameBpm {
     margin-top: 2px;
 }
 
-#frameImportLyrics {
+#frameNewChart{
     margin-top: 2px;
 }
 
@@ -439,13 +587,13 @@ h1 {
 
     position: absolute;
     top: 15%;
-    left: 30%;
+    left: 25%;
     transform: translate (-15%, -50%);
     background-color: lightgray;
     border: solid  darkslategray;
     color: darkslategray;
     padding: 1rem 1.5rem;
-    width: 24rem;
+    width: 50%;
     visibility: hidden;
     z-index: -1;
         
@@ -485,3 +633,12 @@ h1 {
     visibility: hidden;
     
 }
+
+.contextMenu {
+    position: absolute;
+    z-index: 10;
+}
+
+
+
+

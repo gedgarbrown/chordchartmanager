@@ -52,6 +52,7 @@ export class EditDisplay {
         this.displayTitle(chart.name);
 
         document.getElementById("title").innerText = chart.name;
+        document.getElementById("mpr").value = chart.measuresPerRow;
 
     }
 
@@ -160,6 +161,9 @@ export class ViewDisplay {
     }
 
     updateChartContent(chart, page) {
+        let pageNumber = document.getElementById("pageNumber");
+        pageNumber.innerText = page + 1;
+        
         let chartFrame = document.getElementById("chartFrame");
         chartFrame.innerHTML = "";
 
@@ -170,7 +174,7 @@ export class ViewDisplay {
 
         let measuresCurrentRow = 0;
         let rowNumbers = 0;
-        let mpr = 4; 
+        let mpr = chart.measuresPerRow; 
 
         let pageCount = 0; 
 
@@ -271,14 +275,7 @@ export class ViewDisplay {
         key.value = newKey;
     }
 
-    pageForward() {
-
-    }
-
-    pageBack() {
-
-    }
-
+   
     displayChartsToLoad(loadList) {
         /*
          <div id="modal" class="modal">
@@ -342,16 +339,18 @@ export class ViewDisplay {
     }
 
     disablePageNavigationButton(button) {
+      
         button.classList = "";
         button.classList.add("pageButtonDisabled");
-        button.style.visibilty = "hidden";
-
+        button.visibilty = "hidden";
+       
     }
 
     enablePageNavigationButton(button) {
+        
         button.classList = "";
         button.classList.add("pageButtonEnabled");
-        button.style.visibility = "visible";
+        button.visibility = "visible";
     }
 
     changeBackgroundColor(color) {

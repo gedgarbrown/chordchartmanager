@@ -3,13 +3,14 @@
  *******************************************************************/
 
 export class Chart {
-    constructor (id, name, key = 0) {
+    constructor (id, name, key = 0, mpr = 3) {
         this.name = name;
         this.id = id;
         this.measures = [];
         this.lines = [];
         this.key = key;
         this.toolChords = [];
+        this.measuresPerRow = mpr;
     }
 
     exportChart() {
@@ -27,34 +28,10 @@ export class Chart {
 
 
     }
-
-    moveMeasure() {
-        
-    }
-
-    changeKey(newKey) {
-        
-    }
-
-    saveChart() {
-
-    }
-
-    loadChart() {
-
-    }
-
-    importLyrics() {
-
-    }
-
-    exportChart(){
-
-    }
-
+  
     setKey(key = 0) {
 
-        
+        console.log("Key Setting to: ", key);
         key = parseInt(key);
 
         if (isNaN(key)){
@@ -62,6 +39,7 @@ export class Chart {
         };
 
         this.key = key;
+        console.log("Key was set to: ", this.key);
     }
 
     getKey() {
@@ -70,8 +48,9 @@ export class Chart {
 
     getKeyName() {
            
-       // console.log("getting tone name for: ", this.tone);
-       switch (+this.tone) {
+       console.log("getting tone name for: ", this.key);
+
+       switch (+this.key) {
         case 11:
             return "B";
         case 110:
@@ -146,27 +125,16 @@ export class Measure {
         this.lyrics = [];
         this.beats = beats;
         this.isPageBreak = isPageBreak;
+        this.isMeasure = true;
     }
 
     getChords() {
         return this.chords;
     }
 
-    addChord(newChord) {
-
-    }
-
-    moveChord(movedChord) {
-
-    }
-
     addLyric(newLyric, index) {
 
         this.lyrics[index] = newLyric;
-
-    }
-
-    moveLyric(movedLyric) {
 
     }
 
@@ -368,12 +336,13 @@ export class Chord {
         
         
         switch(+newKey) {
-            case 1:
-            case 3:
+            case 0:
+            case 101:
+            case 103:
             case 5:
-            case 6:
-            case 8:
-            case 10:
+            case 106:
+            case 108:
+            case 110:
                 isFlat = true;
             break;
             default:
@@ -418,10 +387,29 @@ export class Chord {
 
         console.log("isFlat: ", isFlat);
 
-        if (isFlat == true) {
+        let isEnharmonicEquivilant = false;
+        switch (+newTone){
+            case 1:
+            case 3:
+            case 6:
+            case 8:
+            case 10:
+                isEnharmonicEquivilant = true;
+                break;
+            default:
+                isEnharmonicEquivilant = false;
+        }
+
+        console.log("newTone: ", newTone);
+        console.log("isee: ", isEnharmonicEquivilant);
+        console.log("isFlat", isFlat);
+
+
+        if (isFlat == true && isEnharmonicEquivilant == true) {
             newTone += 100;
         }
 
+    
         console.log("Transposing from: ", this.tone);
         
         this.tone = newTone;

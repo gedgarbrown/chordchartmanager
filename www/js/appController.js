@@ -9,9 +9,22 @@ export class EditController {
     constructor() {
 
         this.idGenerator = 1;
-        this.loadChart(this.getCurrentChart());
-    
+        let currentChart = this.getCurrentChart();
         this.editDisplay = new EditDisplay();
+
+        if (currentChart != null){
+            try{
+                this.loadChart(currentChart);
+            } catch (error){
+                console.error(error);
+            }
+            
+        } else {
+            this.newChart(true);
+        }
+       
+        
+        
         this.updateKey();
        
         
@@ -34,11 +47,6 @@ export class EditController {
 
         let currentChart = localStorage.getItem("currentChart");
         let ccObject = JSON.parse(currentChart);
-
-        if (ccObject == null){
-
-             return new Chart(Date.now(), "New Chart", 0);
-        } 
 
         return ccObject;      
 
@@ -63,6 +71,12 @@ export class EditController {
         
         this.updateDisplay();
         
+    }
+
+    updateMeasuresPerRow() {
+        let mpr =  parseInt(document.getElementById("mpr").value);
+        this.chart.measuresPerRow = mpr;
+        this.updateDisplay();
     }
 
     createToolBarChords(key) {
@@ -152,7 +166,7 @@ export class EditController {
             newChord.draggable = true;
             newChord.ondragstart = (ev) => {
                 ev.dataTransfer.setData("text", JSON.stringify(chordData));
-            };
+            }
 
 
             
@@ -172,18 +186,15 @@ export class EditController {
         
         let measuresCurrentRow = 0;
         let rowNumbers = 0;
-        let mpr = parseInt(document.getElementById("mpr").value);
+        let mpr = this.chart.measuresPerRow;
         if (isNaN(mpr)) {
             mpr = 3;
         }
                 
-        //let measureElements = [];
         let row = null;
                 
         for(let i = 0; i < measures.length; i++) {
-            //console.log("currentmeasures in row and mpr: ", measuresCurrentRow, mpr);
-            //console.log(measuresCurrentRow < mpr)
-
+           
             if (!(measuresCurrentRow%mpr) || measures[i].isPageBreak) {
 
                 row = document.createElement("div");
@@ -214,16 +225,31 @@ export class EditController {
 
             
             let newMeasure = document.createElement("div");
+            let newMeasureShell = document.createElement("div");
+            let newMeasureGrabber = document.createElement("div");
+            newMeasureShell.appendChild(newMeasureGrabber);
+            newMeasureShell.appendChild(newMeasure);
+            newMeasureShell.classList.add("measureShell");
+            
+            newMeasureGrabber.classList.add("measureGrabber");
+            newMeasureGrabber.innerHTML = `<div>..</div><div>..</div>`;
+            newMeasureGrabber.draggable = true;
             //console.log("current row", row);
             //console.log(newMeasure);
 
-            row.appendChild(newMeasure);
+            row.appendChild(newMeasureShell);
             measuresCurrentRow++;
-            
-            
+                        
             newMeasure.id = measures[i].id;
-            newMeasure.draggable = true;
+
             newMeasure.classList.add("measure");
+
+            
+
+            newMeasureGrabber.ondragstart = (ev) => 
+            {  
+             ev.dataTransfer.setData("text", JSON.stringify(measures[i]));
+            }
 
             let measureChords = document.createElement("div");
             let measureLyrics = document.createElement("div");
@@ -244,18 +270,24 @@ export class EditController {
                 beatLyric.classList.add("lyric");
                 
                 let chordData = new Object();
-                chordData.id = null;
+                //chord id : m[measure index]c[chord index]
+                chordData.id = "m" + i + "c" + x;
                 chordData.isToolBarChord = false;
+
+                beatChord.id = chordData.id;
 
                 beatChord.draggable = true;
                 beatChord.ondragstart = (ev) => 
-                    {ev.dataTransfer.setData("text", beatChord.id)};
+                    {   console.log("BeatChord.id: ", beatChord);
+                    ev.dataTransfer.setData("text", JSON.stringify(chordData));
+                    }
                 beatChord.ondragover = (ev) => 
                     {ev.preventDefault();}
                 beatChord.ondrop = (ev) => {
                    this.droppingOnMeasureChord(ev);     
                 };
-                
+
+                          
                 
                 
                 let currentChord = measures[i].chords[x];
@@ -303,14 +335,19 @@ export class EditController {
     droppingOnMeasureChord(ev) {
         
         ev.preventDefault();
-        let droppedData = JSON.parse(ev.dataTransfer.getData("text"));
-        //ev.target.innerText = document.getElementById(data).innerText;
+        console.log("droppedData: ", ev.dataTransfer.getData("text"));
+        let droppedData = {};
+        if(ev.dataTransfer.getData("text")){
+            droppedData = JSON.parse(ev.dataTransfer.getData("text"));
+        }
+        
+        
         
         if (droppedData.isToolBarChord) {        
             this.placeOnEmptyChord(ev, droppedData);
         }
         else {
-            //todo move chord
+           
             this.placeOnFullChord(ev, droppedData);
 
         }
@@ -325,21 +362,17 @@ export class EditController {
                 return obj.id == droppedData.id;
             });
 
-            console.log("toolChord: ", toolChord);
-
+            
             let measureChords = ev.target.parentNode;
             let measureElement = measureChords.parentNode;
             let measureId = measureElement.id;
 
-            console.log("measureChord: ", toolChord);
-            console.log("measureElement: ", toolChord);
-            console.log("measureId: ", toolChord);
-
+            
             let measureObject = this.chart.measures.find(obj => {
                 return obj.id == measureId;
             });
 
-            console.log("measureObject: ", measureObject);
+           
 
             let newChord = new Chord (this.idGenerator++, toolChord.tone, toolChord.type);
             
@@ -357,14 +390,108 @@ export class EditController {
 
                       
             
-            ev.target.id = newChord.id;
-            ev.target.innerHTML = newChord.getToneName() + newChord.type;
+           this.updateDisplay();
 
 
     }
 
     placeOnFullChord (ev, droppedData) { 
-        ev.target.innerHTML = "Move++";
+
+        
+        let evChordElement = document.getElementById(droppedData.id);
+        
+        console.log("evChordElement: ", evChordElement);
+
+        let evMeasureChords= evChordElement.parentNode;
+        
+        console.log("evMeasureChords", evMeasureChords);
+        console.log(droppedData);
+
+        // mi measure index, ci chord index
+        let mi = parseInt(droppedData.id.charAt(1));
+        let ci = parseInt(droppedData.id.charAt(3));
+
+
+        let targetMeasureChords = ev.target.parentNode;
+        let targetMeasure = targetMeasureChords.parentNode;
+
+        console.log("mi - ci :", mi," ", ci);
+
+        console.log ("chart: ", this.chart);
+
+       let movedChord = this.chart.measures[mi].chords[ci];
+       let chordCopy = new Chord (movedChord.id, movedChord.tone, movedChord.type);
+       
+
+       let measureObject = this.chart.measures.find(obj => {
+        return obj.id == targetMeasure.id;
+        });
+
+       //tci  target chord index, tmi target measure index
+       let tci = Array.prototype.indexOf.call(targetMeasureChords.children, ev.target);
+      
+       measureObject.chords[tci] = chordCopy;
+       if (!(ev.target === evChordElement)) {
+            this.chart.measures[mi].chords[ci] = null;
+       }
+              
+       this.updateDisplay();
+
+    }
+
+    deleteItem(ev){
+
+        ev.preventDefault();
+        console.log("droppedData: ", ev.dataTransfer.getData("text"));
+        let droppedData = {};
+        if(ev.dataTransfer.getData("text")){
+            droppedData = JSON.parse(ev.dataTransfer.getData("text"));
+        }
+        
+        if (droppedData.isMeasure) {        
+            this.deleteMeasure(droppedData);
+        }
+        else {
+           
+            this.deleteChord(droppedData);
+
+        }
+
+    }
+
+    deleteChord(droppedData){ 
+
+        let evChordElement = document.getElementById(droppedData.id);
+        
+        console.log("evChordElement: ", evChordElement);
+
+        let evMeasureChords= evChordElement.parentNode;
+        
+        console.log("evMeasureChords", evMeasureChords);
+        console.log(droppedData);
+
+        // mi measure index, ci chord index
+        let mi = parseInt(droppedData.id.charAt(1));
+        let ci = parseInt(droppedData.id.charAt(3));
+      
+        this.chart.measures[mi].chords[ci] = null;
+   
+              
+       this.updateDisplay();
+
+    }
+
+    deleteMeasure(droppedData) {
+       
+        for (let i = 0; i < this.chart.measures.length; i++) {
+            if (this.chart.measures[i].id == droppedData.id){
+                this.chart.measures.splice(i, 1);
+            }
+
+        }
+
+        this.updateDisplay();
+
     }
 
     addMeasure() {
@@ -402,21 +529,40 @@ export class EditController {
         
         for (let i = 0; i < ocObject.length; i++){
             let newSavedChart = document.createElement("div");
-           
-            console.log("objects ", ocObject[i]);
+            newSavedChart.style.margin = "3px";
+            let savedChartName = document.createElement("span");
+            let btnLoad = document.createElement("input");
+            btnLoad.type = "button";
+            btnLoad.value = "load";
+            btnLoad.style.margin  = "2px";
+            let btnDelete = document.createElement("input");
+            btnDelete.type = "button";
+            btnDelete.value = "delete";
+            btnDelete.style.margin = "2px";
+            newSavedChart.appendChild(savedChartName);
+            newSavedChart.appendChild(btnLoad);
+            newSavedChart.appendChild(btnDelete);
             
-            let newObject = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key, ocObject[i].isToolBarChord);
-
+            
+            let newObject = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key, ocObject[i].measuresPerRow);
+            console.log("Object[i] ", ocObject[i]);
+            console.log("keyName Object[i] ", ocObject[i].key);
+            console.log("newObject", newObject);
+            console.log("keyName NewObject ", newObject.getKeyName());
             let chartName = newObject.name + "(" + newObject.getKeyName() + ")";
 
-            newSavedChart.innerText = chartName;
-            newSavedChart.addEventListener("click", () => {
+            
+            savedChartName.innerText = chartName;
+           
+            
+
+            btnLoad.addEventListener("click", () => {
                
                 let confirmed = confirm(
                     "Load " + ocObject[i].name + 
                     " over current chart?\n Current Chart will not be saved."
                 );
-                console.log(confirmed);
+                //console.log(confirmed);
 
                 if(confirmed){
                     console.log("Loading: ", ocObject[i].name);
@@ -434,6 +580,23 @@ export class EditController {
                 
             }); 
 
+            btnDelete.addEventListener("click", () => {
+
+                let confirmed = confirm(
+                    "Delete" + ocObject[i].name + "from saved items?"
+                );
+
+                if(confirmed) {
+
+                    this.deleteSavedChart(ocObject[i]);
+
+                    this.updateDisplay();
+                    this.editDisplay.closeLoadModal();
+
+                }
+
+            });
+
             newSavedChart.style.cursor = "pointer";
 
             loadList.appendChild(newSavedChart);
@@ -448,7 +611,7 @@ export class EditController {
         console.log("this.chart before: ", this.chart);
         console.log("loading Chart", chart);
 
-            this.chart = new Chart(chart.id, chart.name, chart.key);
+            this.chart = new Chart(chart.id, chart.name, chart.key, chart.measuresPerRow);
 
             console.log("TC length: ", chart.toolChords.length);
             
@@ -490,13 +653,34 @@ export class EditController {
                                 
             console.log("this.chart after: ", this.chart);
 
-        //this.updateDisplay();
             
 
         
 
         console.log("Loaded chart: ", this.chart);
     }
+
+    deleteSavedChart(chart) {
+        let oldCharts = this.getSavedCharts();
+        let ocObject = JSON.parse(oldCharts);
+        let newCharts = [];
+        for (let n = 0; n < ocObject.length; n++){
+
+
+            if (ocObject[n].id == chart.id){
+              continue;
+            } else {
+              newCharts.push(ocObject[n]);
+            }
+        }   
+        
+        localStorage.setItem("savedCharts", JSON.stringify(newCharts));
+    
+    }
+
+
+
+    
 
     saveChart() {
 
@@ -553,19 +737,15 @@ export class EditController {
         return localStorage.getItem("savedCharts");
     }
 
-    importLyrics() {
-        alert("ToDo: importLyrics");
-    }
+    newChart(isConstructor) {
 
-    exportChart() {
-        alert("ToDo: exportChart");
-    }
-
-    newChart() {
-
-        let confirmation = confirm("Are you sure you want to create a new chart?"
+        let confirmation = true;
+        
+        if (!isConstructor){
+            confirmation = confirm("Are you sure you want to create a new chart?"
             + "Any unsaved data on the current chart will be lost.");
-
+        }
+        
         if (!confirmation) {
             return;
         }
@@ -623,7 +803,22 @@ export class EditController {
 export class ViewController{
     constructor() {
        
-        this.loadChart(this.getCurrentChart());
+        
+        let currentChart = this.getCurrentChart();
+        
+        if (currentChart != null){
+            try{
+                this.loadChart(currentChart);
+            } catch (error){
+                console.error(error);
+            }
+            
+        } else {
+            alert("Something went Wrong. Cannot Load Chart!");
+            window.location ="view.html";
+
+        }
+
         this.page = 0;
         this.viewDisplay = new ViewDisplay();
         this.key = 0;
@@ -649,6 +844,7 @@ export class ViewController{
 
     prevPage() {
         this.page--;
+
         if (this.page <= 0) {
             this.page = 0;
             this.disablePagePrevButton();
@@ -668,9 +864,11 @@ export class ViewController{
 
     nextPage() {
        this.page ++;
-        
+        console.log("max pages", this.maxPages);
+        console.log("this page", this.page);
+
        if (this.page >= this.maxPages) {
-           this.page = this.MaxPages - 1;
+           this.page = this.maxPages - 1;
            this.disablePageNextButton();
        } else {
            this.enablePageNextButton();
@@ -689,19 +887,16 @@ export class ViewController{
 
     disablePageNextButton() {
         let button = document.getElementById("pageNext");
-        button.addEventListener("click", () =>{ });
+        button.disabled = true;
+        //button.addEventListener("click", () =>{ });
        
         this.viewDisplay.disablePageNavigationButton(button);
     }
 
     enablePageNextButton() {
         let button = document.getElementById("pageNext");
-        button.addEventListener("click", () =>{
-            
-            this.nextPage();
-        });
-
-       
+        button.disabled = false;
+               
         this.viewDisplay.enablePageNavigationButton(button);
 
 
@@ -709,7 +904,7 @@ export class ViewController{
 
     disablePagePrevButton() {
         let button = document.getElementById("pagePrev");
-        button.addEventListener("click", () =>{});
+        button.disabled = true;
         
         this.viewDisplay.disablePageNavigationButton(button);
 
@@ -717,16 +912,29 @@ export class ViewController{
 
     enablePagePrevButton() {
         let button = document.getElementById("pagePrev");
-        button.addEventListener("click", () =>{
-            this.prevPage();
-        });
+        button.disabled = false;
 
         this.viewDisplay.enablePageNavigationButton(button);
     }
 
 
-    transposeKey() {
-        alert("TODO: change key");
+    updateKey() {
+        
+        let oldKey = this.chart.getKey();
+        let newKey = parseInt(document.getElementById("key").value);
+
+        
+        for (let mi = 0; mi < this.chart.measures.length; mi++){
+
+            for (let ci = 0; ci < this.chart.measures[mi].chords.length; ci++){
+                this.chart.measures[mi].chords[ci].transposeKey(oldKey, newKey);
+            }
+        }
+
+        this.chart.key = newKey; 
+        
+        this.updateDisplay();
+
     }
 
     getMaxPages() {
@@ -759,6 +967,8 @@ export class ViewController{
 
     }
 
+
+
     loadChartMenu() {
 
         let loadList = document.createElement("div");
@@ -779,7 +989,7 @@ export class ViewController{
            
             console.log("objects ", ocObject[i]);
             
-            let newObject = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key, ocObject[i].isToolBarChord);
+            let newObject = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key, ocObject[i].measuresPerRow);
 
             let chartName = newObject.name + "(" + newObject.getKeyName() + ")";
 
@@ -863,7 +1073,7 @@ export class ViewController{
         console.log("this.chart before: ", this.chart);
         console.log("loading Chart", chart);
 
-            this.chart = new Chart(chart.id, chart.name, chart.key);
+            this.chart = new Chart(chart.id, chart.name, chart.key, chart.measuresPerRow);
 
             console.log("TC length: ", chart.toolChords.length);
             
@@ -953,6 +1163,9 @@ export class ViewController{
 
 
             let background = document.createElement("div");
+            background.padding = "3px";
+            background.style.margin = "3px";
+            background.height = "2rem";
             let backgroundBox = document.createElement("span");
             let backgroundButton = document.createElement("input");
             backgroundBox.classList.add("colorBox");
@@ -963,7 +1176,8 @@ export class ViewController{
             background.appendChild(backgroundBox);
             background.appendChild(backgroundButton);
             backgroundButton.type = "button";
-            backgroundButton.value = "Select Color";
+            backgroundButton.value = "Select";
+            backgroundButton.height = "75%";
             backgroundButton.addEventListener("click", () => {
                  this.viewDisplay.changeBackgroundColor(color);
                  this.viewDisplay.closeLoadModal();
@@ -1009,6 +1223,8 @@ export class ViewController{
 
 
             let font = document.createElement("div");
+            font.padding = "3px";
+            font.style.margin = "3px";
             let fontBox = document.createElement("span");
             let fontButton = document.createElement("input");
             fontBox.classList.add("colorBox");
@@ -1019,7 +1235,8 @@ export class ViewController{
             font.appendChild(fontBox);
             font.appendChild(fontButton);
             fontButton.type = "button";
-            fontButton.value = "Select Color";
+            fontButton.value = "Select";
+            fontButton.height = "75%";
             fontButton.addEventListener("click", () => {
                  this.viewDisplay.changeFontColor(color);
                  this.viewDisplay.closeLoadModal();

@@ -60,6 +60,9 @@ body {
         margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
                                       /* offset horizontal: half of image width and text area width */
     }
+    
+
+
 }
 
 h1 {
@@ -96,10 +99,15 @@ h1 {
     padding: 1%;
 }
 
+#frameTranspose {
+    font-size: 0.5rem;
+}
+
 #frameToEdit {
     display: grid;
     grid-template-rows: 45% 10% 45%;
 }
+
 
 #frameLoad {
     display: grid;
@@ -159,6 +167,15 @@ h1 {
     height: 15%;
 }
 
+#pageNumberFrame {
+    padding: 1%;
+    margin: 3px;
+    position: fixed;
+    bottom: 0;
+    left: 48%;
+    vertical-align: bottom;
+}
+
 #pagePrev, #pageNext {
     width: 100%;
     height: 100%;
@@ -171,12 +188,13 @@ h1 {
 
 .pageButtonEnabled {
     display: "visible";
+    opacity: 0.2;
 
 }
 
 .pageButtonDisabled {
     display: "hidden";
-
+    opacity: 1;
 }
 
 
@@ -196,14 +214,14 @@ h1 {
 .loadModal {
 
     position: absolute;
-    top: 15%;
-    left: 30%;
+    top: 25%;
+    left: 15%;
     transform: translate (-15%, -50%);
     background-color: lightgray;
     border: solid  darkslategray;
     color: darkslategray;
     padding: 1rem 1.5rem;
-    width: 24rem;
+    width: 50%;
     visibility: hidden;
     z-index: -1;
         
