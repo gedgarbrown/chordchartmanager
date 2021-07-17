@@ -60,11 +60,10 @@ export class EditController {
         let oldKey = this.chart.getKey();
         this.chart.setKey(newKey);
 
-        console.log("this chart set to: ", this.chart.key);
+       
 
         this.transposeToolBarChords(oldKey, newKey);
-        console.log("will transpose:", willTranspose);
-
+       
         if(willTranspose) {
             this.transposeChartChords(oldKey, newKey);
         }
@@ -109,7 +108,7 @@ export class EditController {
             "7", true
         );
         this.chart.toolChords.push(dominant7);
-        console.log("chords array:", this.chart.toolChords)
+     
 
     }
 
@@ -172,8 +171,7 @@ export class EditController {
             
             this.editDisplay.displayChordInToolBar(newChord);
 
-            //console.log(i, chords[i].id);//debug 
-
+        
        }
     }
 
@@ -203,7 +201,6 @@ export class EditController {
 
                 let rowClass = "rowMeasures" + (measures[i].isPageBreak ? 1 : mpr);
 
-                //console.log("New Row ", rowClass);
                 row.classList.add(rowClass);
                                 
                 rowNumbers++;
@@ -234,9 +231,7 @@ export class EditController {
             newMeasureGrabber.classList.add("measureGrabber");
             newMeasureGrabber.innerHTML = `<div>..</div><div>..</div>`;
             newMeasureGrabber.draggable = true;
-            //console.log("current row", row);
-            //console.log(newMeasure);
-
+           
             row.appendChild(newMeasureShell);
             measuresCurrentRow++;
                         
@@ -278,7 +273,7 @@ export class EditController {
 
                 beatChord.draggable = true;
                 beatChord.ondragstart = (ev) => 
-                    {   console.log("BeatChord.id: ", beatChord);
+                    {  
                     ev.dataTransfer.setData("text", JSON.stringify(chordData));
                     }
                 beatChord.ondragover = (ev) => 
@@ -335,7 +330,7 @@ export class EditController {
     droppingOnMeasureChord(ev) {
         
         ev.preventDefault();
-        console.log("droppedData: ", ev.dataTransfer.getData("text"));
+       
         let droppedData = {};
         if(ev.dataTransfer.getData("text")){
             droppedData = JSON.parse(ev.dataTransfer.getData("text"));
@@ -376,18 +371,15 @@ export class EditController {
 
             let newChord = new Chord (this.idGenerator++, toolChord.tone, toolChord.type);
             
-            console.log("newChord: ", newChord);
+           
 
             let i = Array.prototype.indexOf.call(measureChords.children, ev.target);
 
-            console.log("index: ", i);
+           
 
             measureObject.chords[i] = newChord;
             
-            console.log("measure: ", measureObject.chords[i]);
-
-            console.log("measures in chart:", this.chart.measures);
-
+           
                       
             
            this.updateDisplay();
@@ -400,13 +392,10 @@ export class EditController {
         
         let evChordElement = document.getElementById(droppedData.id);
         
-        console.log("evChordElement: ", evChordElement);
 
         let evMeasureChords= evChordElement.parentNode;
         
-        console.log("evMeasureChords", evMeasureChords);
-        console.log(droppedData);
-
+      
         // mi measure index, ci chord index
         let mi = parseInt(droppedData.id.charAt(1));
         let ci = parseInt(droppedData.id.charAt(3));
@@ -415,9 +404,6 @@ export class EditController {
         let targetMeasureChords = ev.target.parentNode;
         let targetMeasure = targetMeasureChords.parentNode;
 
-        console.log("mi - ci :", mi," ", ci);
-
-        console.log ("chart: ", this.chart);
 
        let movedChord = this.chart.measures[mi].chords[ci];
        let chordCopy = new Chord (movedChord.id, movedChord.tone, movedChord.type);
@@ -442,7 +428,7 @@ export class EditController {
     deleteItem(ev){
 
         ev.preventDefault();
-        console.log("droppedData: ", ev.dataTransfer.getData("text"));
+       
         let droppedData = {};
         if(ev.dataTransfer.getData("text")){
             droppedData = JSON.parse(ev.dataTransfer.getData("text"));
@@ -463,13 +449,10 @@ export class EditController {
 
         let evChordElement = document.getElementById(droppedData.id);
         
-        console.log("evChordElement: ", evChordElement);
-
+     
         let evMeasureChords= evChordElement.parentNode;
         
-        console.log("evMeasureChords", evMeasureChords);
-        console.log(droppedData);
-
+      
         // mi measure index, ci chord index
         let mi = parseInt(droppedData.id.charAt(1));
         let ci = parseInt(droppedData.id.charAt(3));
@@ -545,10 +528,7 @@ export class EditController {
             
             
             let newObject = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key, ocObject[i].measuresPerRow);
-            console.log("Object[i] ", ocObject[i]);
-            console.log("keyName Object[i] ", ocObject[i].key);
-            console.log("newObject", newObject);
-            console.log("keyName NewObject ", newObject.getKeyName());
+        
             let chartName = newObject.name + "(" + newObject.getKeyName() + ")";
 
             
@@ -562,12 +542,10 @@ export class EditController {
                     "Load " + ocObject[i].name + 
                     " over current chart?\n Current Chart will not be saved."
                 );
-                //console.log(confirmed);
+             
 
                 if(confirmed){
-                    console.log("Loading: ", ocObject[i].name);
-                    console.log("this.chart before: ", this.chart);
-                    console.log("loading Chart", ocObject[i]);
+                 
 
                     this.loadChart(ocObject[i]);
 
@@ -607,22 +585,17 @@ export class EditController {
 
     loadChart(chart){ 
 
-        console.log("Loading: ", chart.name);
-        console.log("this.chart before: ", this.chart);
-        console.log("loading Chart", chart);
+     
 
             this.chart = new Chart(chart.id, chart.name, chart.key, chart.measuresPerRow);
 
-            console.log("TC length: ", chart.toolChords.length);
+      
             
 
             for (let tci = 0; tci < chart.toolChords.length; tci++){
                 let otc = chart.toolChords[tci];
                 let newChord = new Chord(otc.id, otc.tone, otc.type, otc.isToolBarChord);
                 
-                console.log("TC length: ", chart.toolChords.length);
-                console.log("tci: ", tci);
-                console.log("tci < TC.lenght", tci < chart.toolChords.length)
                 this.chart.toolChords.push(newChord);
             }
 
@@ -651,13 +624,7 @@ export class EditController {
 
             }
                                 
-            console.log("this.chart after: ", this.chart);
-
-            
-
-        
-
-        console.log("Loaded chart: ", this.chart);
+          
     }
 
     deleteSavedChart(chart) {
@@ -686,24 +653,17 @@ export class EditController {
 
         let oldCharts = this.getSavedCharts();
 
-        //console.log("saved Charts: ", oldCharts);
-
-
         let ocObject = JSON.parse(oldCharts);
-
-        console.log("ocObject", ocObject);
 
         let foundChart = null;
         let chartIndex = 0;
-
-       console.log(ocObject == null);
-
+     
         if (ocObject == null){
            ocObject = [];
         } else {  
-            //foundChart = ocObject.find(obj => { return obj.id == this.chart.id});
+           
             for (let n = 0; n < ocObject.length; n++){
-                console.log("loop oc Object id: ", ocObject[n].id);
+               
                 if (ocObject[n].id == this.chart.id){
                     foundChart = ocObject[n];
                     chartIndex = n;
@@ -712,17 +672,16 @@ export class EditController {
             }
         }
     
-        console.log("FoundChart: ", foundChart);
-        console.log("Index", chartIndex);
+       
 
         if (foundChart == null){
             ocObject.push(this.chart);
         }
         else{
 
-            console.log("object before: ", ocObject);
+         
             ocObject.splice(chartIndex, 1, this.chart);
-            console.log("object after: ", ocObject);
+         
 
         }
 
@@ -752,14 +711,10 @@ export class EditController {
 
         this.idGenerator = 1;
         this.chart = new Chart(Date.now(), "New Chart");
-       
-
-        console.log("New chart Measures created:", this.chart.measures);
-
-        //this.editDisplay = new EditDisplay();
-        
+             
         this.updateKey();
         this.createToolBarChords(0);
+
         //adding default measures
         for (let i = 0; i < 6; i++){
             this.addMeasure();
@@ -824,8 +779,6 @@ export class ViewController{
         this.key = 0;
         this.maxPages = this.getMaxPages();
         
-        console.log("MaxPages", this.maxPages);
-
         this.disablePageNextButton();
         this.disablePagePrevButton();
 
@@ -864,8 +817,6 @@ export class ViewController{
 
     nextPage() {
        this.page ++;
-        console.log("max pages", this.maxPages);
-        console.log("this page", this.page);
 
        if (this.page >= this.maxPages) {
            this.page = this.maxPages - 1;
@@ -987,7 +938,7 @@ export class ViewController{
         for (let i = 0; i < ocObject.length; i++){
             let newSavedChart = document.createElement("div");
            
-            console.log("objects ", ocObject[i]);
+           
             
             let newObject = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key, ocObject[i].measuresPerRow);
 
@@ -1000,25 +951,17 @@ export class ViewController{
                     "Load " + ocObject[i].name + 
                     " over current chart?\n Current Chart will not be saved."
                 );
-                console.log(confirmed);
-
+                
                 if(confirmed){
-                    console.log("Loading: ", ocObject[i].name);
-                    console.log("this.chart before: ", this.chart);
-                    console.log("loading Chart", ocObject[i]);
+               
 
                     this.chart = new Chart(ocObject[i].id, ocObject[i].name, ocObject[i].key);
-
-                    console.log("TC length: ", ocObject[i].toolChords.length);
-                    
 
                     for (let tci = 0; tci < ocObject[i].toolChords.length; tci++){
                         let otc = ocObject[i].toolChords[tci];
                         let newChord = new Chord(otc.id, otc.tone, otc.type, otc.isToolBarChord);
                         
-                        console.log("TC length: ", ocObject[i].toolChords.length);
-                        console.log("tci: ", tci);
-                        console.log("tci < TC.lenght", tci < ocObject[i].toolChords.length)
+                       
                         this.chart.toolChords.push(newChord);
                     }
 
@@ -1047,8 +990,7 @@ export class ViewController{
 
                     }
                                         
-                    console.log("this.chart after: ", this.chart);
-
+                   
                     this.updateDisplay();
                     this.viewDisplay.closeLoadModal();
 
@@ -1069,22 +1011,16 @@ export class ViewController{
 
     loadChart(chart){ 
 
-        console.log("Loading: ", chart.name);
-        console.log("this.chart before: ", this.chart);
-        console.log("loading Chart", chart);
+       
 
             this.chart = new Chart(chart.id, chart.name, chart.key, chart.measuresPerRow);
 
-            console.log("TC length: ", chart.toolChords.length);
-            
+           
 
             for (let tci = 0; tci < chart.toolChords.length; tci++){
                 let otc = chart.toolChords[tci];
                 let newChord = new Chord(otc.id, otc.tone, otc.type, otc.isToolBarChord);
-                
-                console.log("TC length: ", chart.toolChords.length);
-                console.log("tci: ", tci);
-                console.log("tci < TC.lenght", tci < chart.toolChords.length)
+              
                 this.chart.toolChords.push(newChord);
             }
 
@@ -1113,14 +1049,8 @@ export class ViewController{
 
             }
                                 
-            console.log("this.chart after: ", this.chart);
+      
 
-        //this.updateDisplay();
-            
-
-        
-
-        console.log("Loaded chart: ", this.chart);
     }
 
     selectColors() {

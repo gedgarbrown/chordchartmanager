@@ -199,7 +199,7 @@ export class ViewDisplay {
 
                 let rowClass = "rowMeasures" + (measures[i].isPageBreak ? 1 : mpr);
 
-                //console.log("New Row ", rowClass);
+               
                 row.classList.add(rowClass);
                                 
                 rowNumbers++;

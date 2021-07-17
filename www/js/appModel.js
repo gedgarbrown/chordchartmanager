@@ -24,14 +24,11 @@ export class Chart {
     addMeasure(id, bpm, pageBreak = false) {
         let newMeasure = new Measure(id, bpm, pageBreak);
         this.measures.push(newMeasure);
-        //console.log(this.measures);
-
-
+       
     }
   
     setKey(key = 0) {
 
-        console.log("Key Setting to: ", key);
         key = parseInt(key);
 
         if (isNaN(key)){
@@ -39,7 +36,7 @@ export class Chart {
         };
 
         this.key = key;
-        console.log("Key was set to: ", this.key);
+      
     }
 
     getKey() {
@@ -48,8 +45,6 @@ export class Chart {
 
     getKeyName() {
            
-       console.log("getting tone name for: ", this.key);
-
        switch (+this.key) {
         case 11:
             return "B";
@@ -349,28 +344,18 @@ export class Chord {
                 isFlat = false;
             break;
         }
-        
-        console.log("variables for TransposeKey:");
-       
-        console.log("oldKey: ", oldKey);
-        console.log("newKey: ", newKey);
-
+     
         if (oldKey > 100){
             oldKey -= 100;
         }
-
-        console.log("oldKey after 100: ", oldKey)
 
         if (newKey > 100){
             isFlat = true;
             newKey -= 100;
         }
-
-        console.log("newKey after 100", newKey);
        
         let shift = (12 + newKey - oldKey) % 12;
 
-        console.log("shift: ", shift);
         let newTone = 0;
 
         if(this.tone > 100) {
@@ -379,13 +364,6 @@ export class Chord {
         else {
             newTone = (this.tone + shift) % 12;
         }     
-
-       
-
-        console.log("New Tone: ", newTone); 
-        
-
-        console.log("isFlat: ", isFlat);
 
         let isEnharmonicEquivilant = false;
         switch (+newTone){
@@ -400,20 +378,12 @@ export class Chord {
                 isEnharmonicEquivilant = false;
         }
 
-        console.log("newTone: ", newTone);
-        console.log("isee: ", isEnharmonicEquivilant);
-        console.log("isFlat", isFlat);
-
-
         if (isFlat == true && isEnharmonicEquivilant == true) {
             newTone += 100;
         }
 
-    
-        console.log("Transposing from: ", this.tone);
-        
         this.tone = newTone;
-        console.log("Transposing to: ", this.tone)
+       
     }
 }
 

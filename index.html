@@ -34,22 +34,27 @@
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <meta name="color-scheme" content="light dark">
         <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
+        <title>Chord Chart Manager</title>
+        <style>
+            body {
+                display: block;
+                margin-top: 35%;
+                margin-bottom: auto;
+                margin-right: auto;
+                margin-left: auto;
+                text-align: center;
+            }
+
+        </style>
     </head>
     <body onload=goToEdit()>
         <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
+           <a href="./www/edit.html">
+            <h1>Continue to Chord Chart Manager</h1>
+            </a> 
+            
         </div>
         
-        <script >
-            function goToEdit() {
-                window.location = "./www/edit.html"
-            }
-
-        </script>
+       
     </body>
 </html>
